@@ -109,17 +109,17 @@ export const ChooseValidator: React.FC<{
   b?: ValidatorChoice["values"]
 }> = ({ a, b, onSelectA, onSelectB }) => {
   return (
-    <div className="flex flex-col gap-12 bg-bg-default py-4 px-16">
+    <div className="flex flex-col gap-18 bg-bg-default py-4 px-16">
       <div className="flex gap-3 items-center">
         <PolkadotIcon />
         <div className="h-6 w-[2px] bg-gray-300" />
         <span className="text-xl font-[Unbounded]">Validator Picker</span>
       </div>
-      <div className="flex flex-col gap-4 w-1/2">
+      <div className="flex flex-col items-center mx-auto gap-4 w-1/2 my-12 text-center">
         <span className="text-h3 font-unbounded">
           Refine your validator set
         </span>
-        <span className="text-body">
+        <span className="text-body-2">
           This tool is designed to help you choose the Validators that are
           better suited for your preferences.
           <div className="mb-3" />
@@ -127,6 +127,7 @@ export const ChooseValidator: React.FC<{
           validators and we are going to provide you with a list of suggested
           addresses based on your personal preferences.
         </span>
+        <Button width="fit">Start now!</Button>
       </div>
       <div className="flex gap-16">
         <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
