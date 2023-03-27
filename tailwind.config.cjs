@@ -23,8 +23,8 @@ module.exports = {
       },
       colors: {
         bg: { default: "#F5F4F4" },
-        "p-pink": { 100: "#FFE4F3" },
-        "p-purple": { 100: "#F3F5FB" },
+        "p-pink": { 100: "#FFE4F3", 600: "#CB006C" },
+        "p-purple": { 100: "#F3F5FB", 900: "#1C0533" },
         primary: "#E6007A",
         secondary: "#321D47",
       },
