@@ -3,6 +3,7 @@ import { ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
 import { loading } from "./Loading"
 import { PolkadotIcon } from "@/Assets/Icons"
+import { Accounticon } from "@/Components/AccountIcon"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -43,8 +44,7 @@ const Column: React.FC<{
         }`}
       >
         <div className="flex flex-col gap-4 items-center">
-          <div className="h-10 w-10 bg-white rounded-full"></div>
-          <span className="text-h5 font-unbounded">Address</span>
+          <Accounticon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
         </div>
         <Button secondary={right}>Select</Button>
       </div>
