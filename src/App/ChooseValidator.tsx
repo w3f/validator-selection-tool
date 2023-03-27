@@ -4,6 +4,8 @@ import { ConfindenceLevel } from "./ConfidenceLevel"
 import { loading } from "./Loading"
 import { PolkadotIcon } from "@/Assets/Icons"
 import { Accounticon } from "@/Components/AccountIcon"
+import { Results } from "./Results"
+import Button from "@/Components/Button"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -36,7 +38,8 @@ const Field: React.FC<{
 const Column: React.FC<{
   right?: boolean
   data?: ValidatorChoice["values"]
-}> = ({ right, data }) => {
+  onSelect?: () => void
+}> = ({ right, data, onSelect }) => {
   return (
     <div className="flex flex-col w-full gap-6">
       <div
@@ -47,16 +50,26 @@ const Column: React.FC<{
         <div className="flex flex-col gap-4 items-center">
           <Accounticon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
         </div>
-        <Button secondary={right}>Select</Button>
+        <Button onClick={onSelect} secondary={right}>
+          Select
+        </Button>
       </div>
       <div
-        className={`flex flex-col  gap-6 pb-6 text-body-2 ${
+        className={`flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
           right ? "items-start" : "items-end"
         } `}
       >
-        {Object.entries(sections).map(([key]) => (
-          <div key={key} className="body-2">
+        {Object.entries(sections).map(([key], index) => (
+          <div
+            key={key}
+            className={`w-full body-2 flex flex-col gap-4 ${
+              right ? "pr-6 items-start" : "pl-6 items-end"
+            }`}
+          >
             <Field data={data} field={key as any} />
+            {index < Object.entries(sections).length - 1 ? (
+              <div className="w-full h-[1px] bg-gray-200" />
+            ) : null}
           </div>
         ))}
       </div>
@@ -75,27 +88,17 @@ const Center: React.FC<{
           VS
         </span>
       </div>
-      <div className="flex flex-col items-center gap-6 pb-6 text-body-2">
-        {Object.entries(sections).map(([key, title]) => (
-          <div key={key}>{title}</div>
+      <div className="flex flex-col items-center gap-4 pb-6 text-body-2">
+        {Object.entries(sections).map(([key, title], index) => (
+          <div key={key} className="w-full flex flex-col items-center gap-4">
+            {title}
+            {index < Object.entries(sections).length - 1 ? (
+              <div className="w-full h-[1px] bg-gray-200" />
+            ) : null}
+          </div>
         ))}
       </div>
     </div>
-  )
-}
-
-const Button: React.FC<{
-  children?: JSX.Element | string
-  secondary?: boolean
-}> = ({ children, secondary }) => {
-  return (
-    <button
-      className={`py-2 w-full rounded-full text-body-2 text-white ${
-        secondary ? "bg-secondary" : "bg-primary"
-      } `}
-    >
-      {children}
-    </button>
   )
 }
 
@@ -127,18 +130,18 @@ export const ChooseValidator: React.FC<{
       </div>
       <div className="flex gap-16">
         <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
-          <Column data={a} />
+          <Column data={a} onSelect={onSelectA} />
           <Center />
-          <Column data={b} right />
+          <Column data={b} onSelect={onSelectB} right />
         </div>
         <div className="w-full flex flex-col gap-16">
-          <div className=" flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <span className="text-h5 font-unbounded">Confidence Level</span>
             <ConfindenceLevel />
           </div>
           <div className="flex flex-col gap-4">
             <span className="text-h5 font-unbounded">Results</span>
-            validators list/grid
+            <Results />
           </div>
         </div>
       </div>

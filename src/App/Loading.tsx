@@ -25,4 +25,4 @@ export const Loading: React.FC<{ size: number }> = ({ size }) => (
   </svg>
 )
 
-export const loading = <Loading size={15} />
+export const loading = <Loading size={21} />
