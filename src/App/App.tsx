@@ -6,8 +6,7 @@ import {
   withDefault,
 } from "@react-rxjs/core"
 import { map, noop, repeat, startWith, takeUntil } from "rxjs"
-import { ChooseValidator } from "./ChoosValidator"
-import { Dialog } from "./Dialog"
+import { ChooseValidator } from "./ChooseValidator"
 import { Results } from "./Results"
 
 const nullPairs = { a: null, b: null }
@@ -42,9 +41,12 @@ displayResults$.subscribe()
 export const App = () => {
   const displayResults = useStateObservable(displayResults$)
   return (
-    <>
-      <Dialog />
+    <div className="bg-gray-100 w-full">
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Unbounded:wght@500&display=swap');
+      </style>
       {displayResults ? <Results /> : <Pair />}
-    </>
+    </div>
   )
 }

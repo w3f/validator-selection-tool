@@ -6,12 +6,27 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Satoshi", ...defaultTheme.fontFamily.sans],
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        unbounded: "Unbounded",
+      },
+      fontSize: {
+        body: "1rem",
+        "body-2": "0.875rem",
+        h3: "2rem",
+        h4: "1.25rem",
+        h5: "1rem",
       },
       spacing: {
         18: "4.5rem",
         112: "28rem",
         120: "30rem",
+      },
+      colors: {
+        bg: { default: "#F5F4F4" },
+        "p-pink": { 100: "#FFE4F3" },
+        "p-purple": { 100: "#F3F5FB" },
+        primary: "#E6007A",
+        secondary: "#321D47",
       },
     },
   },
