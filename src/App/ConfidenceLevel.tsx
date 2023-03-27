@@ -29,14 +29,9 @@ export const ConfindenceLevel: React.FC = () => {
   const increase: boolean = prev !== null && current > prev
 
   return (
-    <div className="relative overflow-hidden rounded-lg bg-white">
-      <dt>
-        <p className="truncate text-sm font-medium text-gray-500">
-          Confidence Level
-        </p>
-      </dt>
+    <div className="overflow-hidden ">
       <dd className="flex items-baseline pb-6 sm:pb-7">
-        <p className="text-2xl font-semibold text-gray-900">
+        <p className="text-h4 font-unbounded text-gray-900">
           {asPercent(current)}
         </p>
         {current > 0 && prev !== null ? (

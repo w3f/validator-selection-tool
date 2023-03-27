@@ -2,6 +2,7 @@ import { Fragment } from "react"
 import { ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
 import { loading } from "./Loading"
+import { PolkadotIcon } from "@/Assets/Icons"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -31,6 +32,41 @@ const Field: React.FC<{
   return <>{value + append}</>
 }
 
+const Column: React.FC<{
+  right?: boolean
+}> = ({ right }) => {
+  return (
+    <div className="flex flex-col w-full">
+      <div
+        className={`flex flex-col py-6 gap-6   items-center ${
+          right ? "pr-6 bg-p-purple-100" : "pl-6 bg-p-pink-100"
+        }`}
+      >
+        <div className="flex flex-col gap-4 items-center">
+          <div className="h-10 w-10 bg-white rounded-full"></div>
+          <span className="text-h5 font-unbounded">Address</span>
+        </div>
+        <Button secondary={right}>Select</Button>
+      </div>
+    </div>
+  )
+}
+
+const Button: React.FC<{
+  children?: JSX.Element | string
+  secondary?: boolean
+}> = ({ children, secondary }) => {
+  return (
+    <button
+      className={`py-2 w-full rounded-full text-body-2 text-white ${
+        secondary ? "bg-secondary" : "bg-primary"
+      } `}
+    >
+      {children}
+    </button>
+  )
+}
+
 export const ChooseValidator: React.FC<{
   onSelectA: () => void
   onSelectB: () => void
@@ -38,17 +74,47 @@ export const ChooseValidator: React.FC<{
   b?: ValidatorChoice["values"]
 }> = ({ a, b, onSelectA, onSelectB }) => {
   return (
-    <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Choose your preferred Validator
-          </p>
+    <div className="flex flex-col gap-12 bg-bg-default py-4 px-16">
+      <div className="flex gap-3 items-center">
+        <PolkadotIcon />
+        <div className="h-6 w-[2px] bg-gray-300" />
+        <span className="text-xl font-[Unbounded]">Validator Picker</span>
+      </div>
+      <div className="flex flex-col gap-4 w-1/2">
+        <span className="text-h3 font-unbounded">
+          Refine your validator set
+        </span>
+        <span className="text-body">
+          This tool is designed to help you choose the Validators that are
+          better suited for your preferences.
+          <div className="mb-3" />
+          We are going to ask you to decide between a few (5-8) pairs of
+          validators and we are going to provide you with a list of suggested
+          addresses based on your personal preferences.
+        </span>
+      </div>
+      <div className="flex gap-16">
+        <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
+          <Column />
+          <div className="flex flex-col items-center justify-end p-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
+            <span className="py-2 px-4 w-full rounded-full shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
+              VS
+            </span>
+          </div>
+          <Column right />
         </div>
-        <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-          Pay attention to the differences blah blah
-        </p>
-
+        <div className="w-full flex flex-col gap-16">
+          <div className=" flex flex-col gap-4">
+            <span className="text-h5 font-unbounded">Confidence Level</span>
+            <ConfindenceLevel />
+          </div>
+          <div className="flex flex-col gap-4">
+            <span className="text-h5 font-unbounded">Results</span>
+            validators list/grid
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* lg+ */}
         <div className="isolate mt-20">
           <div className="relative -mx-8">
