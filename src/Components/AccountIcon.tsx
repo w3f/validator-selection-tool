@@ -7,8 +7,6 @@ export function Accounticon({
 }: {
   address: string
   name?: string
-  size?: number
-  textClassName?: string
 }) {
   const btnTitle = name || address
   return (
