@@ -35,11 +35,12 @@ const Field: React.FC<{
 
 const Column: React.FC<{
   right?: boolean
-}> = ({ right }) => {
+  data?: ValidatorChoice["values"]
+}> = ({ right, data }) => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-6">
       <div
-        className={`flex flex-col py-6 gap-6   items-center ${
+        className={`flex flex-col py-6 gap-6 items-center ${
           right ? "pr-6 bg-p-purple-100" : "pl-6 bg-p-pink-100"
         }`}
       >
@@ -47,6 +48,37 @@ const Column: React.FC<{
           <Accounticon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
         </div>
         <Button secondary={right}>Select</Button>
+      </div>
+      <div
+        className={`flex flex-col  gap-6 pb-6 text-body-2 ${
+          right ? "items-start" : "items-end"
+        } `}
+      >
+        {Object.entries(sections).map(([key]) => (
+          <div key={key} className="body-2">
+            <Field data={data} field={key as any} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+const Center: React.FC<{
+  right?: boolean
+  a?: ValidatorChoice["values"]
+  b?: ValidatorChoice["values"]
+}> = ({ right, a, b }) => {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex h-full flex-col items-center justify-end py-6 px-10 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
+        <span className="py-2 px-4 rounded-full shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
+          VS
+        </span>
+      </div>
+      <div className="flex flex-col items-center gap-6 pb-6 text-body-2">
+        {Object.entries(sections).map(([key, title]) => (
+          <div key={key}>{title}</div>
+        ))}
       </div>
     </div>
   )
@@ -95,13 +127,9 @@ export const ChooseValidator: React.FC<{
       </div>
       <div className="flex gap-16">
         <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
-          <Column />
-          <div className="flex flex-col items-center justify-end p-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
-            <span className="py-2 px-4 w-full rounded-full shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
-              VS
-            </span>
-          </div>
-          <Column right />
+          <Column data={a} />
+          <Center />
+          <Column data={b} right />
         </div>
         <div className="w-full flex flex-col gap-16">
           <div className=" flex flex-col gap-4">
