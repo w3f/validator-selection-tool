@@ -2,6 +2,7 @@ import { latestQuality$ } from "@/state"
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid"
 import { useStateObservable, withDefault } from "@react-rxjs/core"
 import { map, scan } from "rxjs"
+import chroma from "chroma-js"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
@@ -21,9 +22,13 @@ const asPercent = (value: number) =>
     style: "percent",
   })
 
+const f = chroma.scale(["#E86A5D", "#DCDC5C", "#6DCB65"])
+
 export const ConfindenceLevel: React.FC = () => {
   const current = useStateObservable(latestQuality$)
   const prev = useStateObservable(prev$)
+
+  console.log(f(current).toString())
 
   const increase: boolean = prev !== null && current > prev
 
@@ -33,8 +38,11 @@ export const ConfindenceLevel: React.FC = () => {
         {current < 0.85 ? (
           <>
             <div
-              style={{ width: asPercent(current) }}
-              className={`h-12 bg-primary`}
+              style={{
+                width: asPercent(current),
+                background: f(current).toString(),
+              }}
+              className={`h-12`}
             />
             <p
               className={`text-h4 font-unbounded ${
@@ -46,7 +54,10 @@ export const ConfindenceLevel: React.FC = () => {
           </>
         ) : (
           <div
-            style={{ width: asPercent(current) }}
+            style={{
+              width: asPercent(current),
+              background: f(current).toString(),
+            }}
             className={`h-12 bg-primary flex items-center justify-end px-4 `}
           >
             <p className="text-h4 font-unbounded text-white">
