@@ -6,6 +6,8 @@ import { PolkadotIcon } from "@/Assets/Icons"
 import { Accounticon } from "@/Components/AccountIcon"
 import { Results } from "./Results"
 import Button from "@/Components/Button"
+import { useStateObservable } from "@react-rxjs/core"
+import { latestQuality$ } from "@/state"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -108,6 +110,8 @@ export const ChooseValidator: React.FC<{
   a?: ValidatorChoice["values"]
   b?: ValidatorChoice["values"]
 }> = ({ a, b, onSelectA, onSelectB }) => {
+  const current = useStateObservable(latestQuality$)
+
   return (
     <div className="flex flex-col gap-18 bg-bg-default py-4 px-16">
       <div className="flex gap-3 items-center">
@@ -129,11 +133,19 @@ export const ChooseValidator: React.FC<{
         </span>
       </div>
       <div className="flex gap-16">
-        <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
-          <Column data={a} onSelect={onSelectA} />
-          <Center />
-          <Column data={b} onSelect={onSelectB} right />
-        </div>
+        {current < 0.9 ? (
+          <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
+            <Column data={a} onSelect={onSelectA} />
+            <Center />
+            <Column data={b} onSelect={onSelectB} right />
+          </div>
+        ) : (
+          <div className="w-full bg-gray-200 rounded-lg flex items-center justify-center">
+            <Button secondary width="fit">
+              Start over
+            </Button>
+          </div>
+        )}
         <div className="w-full flex flex-col gap-16">
           <div className="flex flex-col gap-4">
             <span className="text-h5 font-unbounded">Confidence Level</span>
