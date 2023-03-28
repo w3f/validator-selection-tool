@@ -19,7 +19,6 @@ const prev$ = latestQuality$.pipeState(
 const asPercent = (value: number) =>
   value.toLocaleString(undefined, {
     style: "percent",
-    minimumFractionDigits: 2,
   })
 
 export const ConfindenceLevel: React.FC = () => {
@@ -29,37 +28,58 @@ export const ConfindenceLevel: React.FC = () => {
   const increase: boolean = prev !== null && current > prev
 
   return (
-    <div className="overflow-hidden ">
-      <dd className="flex items-baseline pb-6 sm:pb-7">
-        <p className="text-h4 font-unbounded text-gray-900">
-          {asPercent(current)}
-        </p>
-        {current > 0 && prev !== null ? (
-          <p
-            className={classNames(
-              increase ? "text-green-600" : "text-red-600",
-              "ml-2 flex items-baseline text-sm font-semibold",
-            )}
+    <div className="flex gap-4 items-center">
+      <div className="flex gap-3 w-full h-fit items-center bg-gray-200 rounded-full overflow-clip">
+        {current < 0.85 ? (
+          <>
+            <div
+              style={{ width: asPercent(current) }}
+              className={`h-12 bg-primary`}
+            />
+            <p
+              className={`text-h4 font-unbounded ${
+                current === 0 ? "text-gray-400" : "text-gray-900"
+              }`}
+            >
+              {asPercent(current)}
+            </p>
+          </>
+        ) : (
+          <div
+            style={{ width: asPercent(current) }}
+            className={`h-12 bg-primary flex items-center justify-end px-4 `}
           >
-            {increase ? (
-              <ArrowUpIcon
-                className="h-5 w-5 flex-shrink-0 self-center text-green-500"
-                aria-hidden="true"
-              />
-            ) : (
-              <ArrowDownIcon
-                className="h-5 w-5 flex-shrink-0 self-center text-red-500"
-                aria-hidden="true"
-              />
-            )}
-            <span className="sr-only">
-              {" "}
-              {increase ? "Increased" : "Decreased"} by{" "}
-            </span>
-            {asPercent(Math.abs(current - prev))}
-          </p>
-        ) : null}
-      </dd>
+            <p className="text-h4 font-unbounded text-white">
+              {asPercent(current)}
+            </p>
+          </div>
+        )}
+      </div>
+      {current > 0 && prev !== null ? (
+        <p
+          className={classNames(
+            increase ? "text-green-600" : "text-red-600",
+            "ml-2 flex items-center font-unbounded text-h4 w-[84px] justify-end",
+          )}
+        >
+          {increase ? (
+            <ArrowUpIcon
+              className="h-5 w-5 flex-shrink-0 self-center text-green-500"
+              aria-hidden="true"
+            />
+          ) : (
+            <ArrowDownIcon
+              className="h-5 w-5 flex-shrink-0 self-center text-red-500"
+              aria-hidden="true"
+            />
+          )}
+          <span className="sr-only">
+            {" "}
+            {increase ? "Increased" : "Decreased"} by{" "}
+          </span>
+          {asPercent(Math.abs(current - prev))}
+        </p>
+      ) : null}
     </div>
   )
 }
