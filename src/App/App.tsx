@@ -29,12 +29,12 @@ const Pair: React.FC = () => {
 
 export const App = () => {
   return (
-    <div className="bg-gray-100 w-full">
+    <>
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Unbounded:wght@500&display=swap');
       </style>
       <Pair />
-    </div>
+    </>
   )
 }
