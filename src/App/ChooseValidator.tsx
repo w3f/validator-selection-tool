@@ -2,12 +2,14 @@ import { ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
 import { loading } from "./Loading"
 import { PolkadotIcon } from "@/Assets/Icons"
-import { Accounticon } from "@/Components/AccountIcon"
+import { AccountIcon } from "@/Components/AccountIcon"
 import { Results } from "./Results"
 import Button from "@/Components/Button"
 import { useStateObservable, withDefault } from "@react-rxjs/core"
 import { onReset, ResultsState, resultsState$ } from "@/state"
 import { map } from "rxjs"
+import Hero from "@/Components/Hero"
+import Header from "@/Components/Header"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -46,31 +48,33 @@ const Column: React.FC<{
         }`}
       >
         <div className="flex flex-col gap-4 items-center">
-          <Accounticon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
+          <AccountIcon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
         </div>
         <Button onClick={onSelect} secondary={right}>
           Select
         </Button>
       </div>
-      <div
-        className={`flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
-          right ? "items-start" : "items-end"
-        } `}
-      >
-        {Object.entries(sections).map(([key], index) => (
-          <div
-            key={key}
-            className={`w-full body-2 flex flex-col gap-4 ${
-              right ? "pr-6 items-start" : "pl-6 items-end"
-            }`}
-          >
-            <Field data={data} field={key as any} />
-            {index < Object.entries(sections).length - 1 ? (
-              <div className="w-full h-[1px] bg-gray-200" />
-            ) : null}
-          </div>
-        ))}
-      </div>
+      {
+        <div
+          className={`flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
+            right ? "items-start" : "items-end"
+          } `}
+        >
+          {Object.entries(sections).map(([key], index) => (
+            <div
+              key={key}
+              className={`w-full body-2 flex flex-col gap-4 ${
+                right ? "pr-6 items-start" : "pl-6 items-end"
+              }`}
+            >
+              <Field data={data} field={key as any} />
+              {index < Object.entries(sections).length - 1 ? (
+                <div className="w-full h-[1px] bg-gray-200" />
+              ) : null}
+            </div>
+          ))}
+        </div>
+      }
     </div>
   )
 }
@@ -104,7 +108,7 @@ const isInit$ = resultsState$.pipeState(
 const Reset: React.FC = () => {
   const isInit = useStateObservable(isInit$)
   return isInit ? null : (
-    <Button onClick={() => onReset()} width="fit">
+    <Button secondary onClick={() => onReset()} width="fit">
       Reset
     </Button>
   )
@@ -124,26 +128,10 @@ export const ChooseValidator: React.FC<{
   const isDone = useStateObservable(isDone$)
 
   return (
-    <div className="flex flex-col gap-18 bg-bg-default py-4 px-16">
-      <div className="flex gap-3 items-center">
-        <PolkadotIcon />
-        <div className="h-6 w-[2px] bg-gray-300" />
-        <span className="text-xl font-[Unbounded]">Validator Picker</span>
-      </div>
-      <div className="flex flex-col items-start gap-4 w-1/2 mt-0 mb-4">
-        <span className="text-h3 font-unbounded">
-          Refine your validator set
-        </span>
-        <span className="text-body-2">
-          This tool is designed to help you choose the Validators that are
-          better suited for your preferences.
-          <div className="mb-3" />
-          We are going to ask you to decide between a few (5-8) pairs of
-          validators and we are going to provide you with a list of suggested
-          addresses based on your personal preferences.
-        </span>
-      </div>
-      <div className="flex gap-16">
+    <div className="flex flex-col gap-18 bg-bg-default py-4 px-16 h-screen">
+      <Header />
+      <Hero />
+      <div className="h-fit flex gap-16">
         {!isDone ? (
           <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
             <Column data={a} onSelect={onSelectA} />
@@ -162,8 +150,11 @@ export const ChooseValidator: React.FC<{
             <span className="text-h5 font-unbounded">Confidence Level</span>
             <ConfindenceLevel />
           </div>
-          <div className="flex flex-col gap-4">
-            <Reset />
+          <div className="flex flex-col gap-2">
+            <div className="flex h-6 items-center justify-between">
+              <span className="text-h5 font-unbounded">Results</span>
+              <Reset />
+            </div>
             <Results />
           </div>
         </div>
