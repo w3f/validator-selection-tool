@@ -1,7 +1,6 @@
-import Button from "@/Components/Button"
-import { onReset, results$ } from "@/state"
+import { results$, ResultsState, resultsState$ } from "@/state"
 import Identicon from "@polkadot/react-identicon"
-import { Subscribe, SUSPENSE } from "@react-rxjs/core"
+import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { Loading } from "./Loading"
 
@@ -18,23 +17,29 @@ const ValidatorListItem: React.FC<{ address: string }> = ({ address }) => {
 
 const jsxResults$ = results$.pipeState(
   map((x) =>
-    x === SUSPENSE
-      ? x
-      : x.map((result) => <ValidatorListItem key={result} address={result} />),
+    Array.isArray(x)
+      ? x.map((result) => <ValidatorListItem key={result} address={result} />)
+      : x,
   ),
 )
 
+const isTitleVisible$ = resultsState$.pipeState(
+  map((x) => x > ResultsState.INSUFICIENT),
+  withDefault(false),
+)
+
 export const Results: React.FC = () => {
+  const isTitleVisible = useStateObservable(isTitleVisible$)
   return (
-    <div className="">
+    <>
+      {isTitleVisible && (
+        <span className="text-h5 font-unbounded">Results</span>
+      )}
       <Subscribe fallback={<Loading size={30} />}>
         <ul role="list" className="divide-y mx-auto my-10 divide-gray-200">
           {jsxResults$}
         </ul>
       </Subscribe>
-      <Button onClick={() => onReset()} width="fit">
-        Reset
-      </Button>
-    </div>
+    </>
   )
 }

@@ -1,4 +1,3 @@
-import { Fragment } from "react"
 import { ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
 import { loading } from "./Loading"
@@ -6,8 +5,9 @@ import { PolkadotIcon } from "@/Assets/Icons"
 import { Accounticon } from "@/Components/AccountIcon"
 import { Results } from "./Results"
 import Button from "@/Components/Button"
-import { useStateObservable } from "@react-rxjs/core"
-import { latestQuality$ } from "@/state"
+import { useStateObservable, withDefault } from "@react-rxjs/core"
+import { onReset, ResultsState, resultsState$ } from "@/state"
+import { map } from "rxjs"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -17,10 +17,6 @@ const sections = {
   totalStake: "Total Stake",
   voters: "Voters",
 } as const
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ")
-}
 
 const Field: React.FC<{
   field: keyof ValidatorChoice["values"]
@@ -78,11 +74,7 @@ const Column: React.FC<{
     </div>
   )
 }
-const Center: React.FC<{
-  right?: boolean
-  a?: ValidatorChoice["values"]
-  b?: ValidatorChoice["values"]
-}> = ({ right, a, b }) => {
+const Center: React.FC<{}> = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex h-full flex-col items-center justify-end py-6 px-10 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
@@ -104,13 +96,32 @@ const Center: React.FC<{
   )
 }
 
+const isInit$ = resultsState$.pipeState(
+  map((x) => x === ResultsState.INIT),
+  withDefault(true),
+)
+
+const Reset: React.FC = () => {
+  const isInit = useStateObservable(isInit$)
+  return isInit ? null : (
+    <Button onClick={() => onReset()} width="fit">
+      Reset
+    </Button>
+  )
+}
+
+const isDone$ = resultsState$.pipeState(
+  map((x) => x === ResultsState.PERFECT),
+  withDefault(false),
+)
+
 export const ChooseValidator: React.FC<{
   onSelectA: () => void
   onSelectB: () => void
   a?: ValidatorChoice["values"]
   b?: ValidatorChoice["values"]
 }> = ({ a, b, onSelectA, onSelectB }) => {
-  const current = useStateObservable(latestQuality$)
+  const isDone = useStateObservable(isDone$)
 
   return (
     <div className="flex flex-col gap-18 bg-bg-default py-4 px-16">
@@ -133,7 +144,7 @@ export const ChooseValidator: React.FC<{
         </span>
       </div>
       <div className="flex gap-16">
-        {current < 0.9 ? (
+        {!isDone ? (
           <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
             <Column data={a} onSelect={onSelectA} />
             <Center />
@@ -141,7 +152,7 @@ export const ChooseValidator: React.FC<{
           </div>
         ) : (
           <div className="w-full bg-gray-200 rounded-lg flex items-center justify-center">
-            <Button secondary width="fit">
+            <Button secondary width="fit" onClick={onReset}>
               Start over
             </Button>
           </div>
@@ -152,86 +163,8 @@ export const ChooseValidator: React.FC<{
             <ConfindenceLevel />
           </div>
           <div className="flex flex-col gap-4">
-            <span className="text-h5 font-unbounded">Results</span>
+            <Reset />
             <Results />
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* lg+ */}
-        <div className="isolate mt-20">
-          <div className="relative -mx-8">
-            <table className="w-full table-fixed border-separate border-spacing-x-8 text-left">
-              <caption className="sr-only">Validators comparison</caption>
-              <colgroup>
-                <col className="w-1/3" />
-                <col className="w-1/3" />
-                <col className="w-1/3" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <td />
-                  <th scope="col" className="px-6 pt-6 xl:px-8 xl:pt-8"></th>
-                  <th scope="col" className="px-6 pt-6 xl:px-8 xl:pt-8"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    <ConfindenceLevel />
-                  </th>
-                  {["Validator A", "Validator B"].map((validator, idx) => (
-                    <td key={validator} className="px-6 pt-2 xl:px-8">
-                      <div className="flex items-baseline gap-x-1 text-gray-900">
-                        <span className="text-4xl font-bold">{validator}</span>
-                      </div>
-                      <a
-                        onClick={idx ? onSelectB : onSelectA}
-                        className="text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300
-                          mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Select
-                      </a>
-                    </td>
-                  ))}
-                </tr>
-                <Fragment>
-                  <tr>
-                    <th
-                      scope="colgroup"
-                      colSpan={4}
-                      className={classNames(
-                        "pt-8 pb-4 text-sm font-semibold leading-6 text-gray-900",
-                      )}
-                    >
-                      Properties
-                      <div className="absolute inset-x-8 mt-4 h-px bg-gray-900/10" />
-                    </th>
-                  </tr>
-                  {Object.entries(sections).map(([key, title]) => (
-                    <tr key={key}>
-                      <th
-                        scope="row"
-                        className="py-4 text-sm font-normal leading-6 text-gray-900"
-                      >
-                        {title}
-                        <div className="absolute inset-x-8 mt-4 h-px bg-gray-900/5" />
-                      </th>
-                      <td className="py-4 px-6 xl:px-8">
-                        <div className="text-center text-sm leading-6 text-gray-500">
-                          <Field data={a} field={key as any} />
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 xl:px-8">
-                        <div className="text-center text-sm leading-6 text-gray-500">
-                          <Field data={b} field={key as any} />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </Fragment>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
