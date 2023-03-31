@@ -31,6 +31,9 @@ let quality = 0
 export async function nextPair(
   prevChoice: ValidatorChoice | null,
 ): Promise<Pair> {
+  if (prevChoice === null) {
+    quality = 0
+  }
   await new Promise((res) => setTimeout(res, Math.random() * 2500))
   const result = {
     a: {
