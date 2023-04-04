@@ -42,3 +42,39 @@ export function PolkadotIcon({ size, className }: IconProps) {
     </svg>
   )
 }
+
+export function ArrowUpIcon({ size, className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ? size : "24"}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 28 28"
+    >
+      <path d="M14.009 3v23M4 12.2L14.009 2 24 12.2" data-nofill="true"></path>
+    </svg>
+  )
+}
+
+export function ArrowDownIcon({ size, className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ? size : "24"}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 28 28"
+    >
+      <path d="M13.991 25V2M24 15.8L13.991 26 4 15.8" data-nofill="true"></path>
+    </svg>
+  )
+}
