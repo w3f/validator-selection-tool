@@ -1,13 +1,22 @@
-import { ValidatorChoice } from "@/api"
+import { Pair, ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
-import { loading } from "./Loading"
-import { PolkadotIcon } from "@/Assets/Icons"
 import { AccountIcon } from "@/Components/AccountIcon"
 import { Results } from "./Results"
 import Button from "@/Components/Button"
-import { useStateObservable, withDefault } from "@react-rxjs/core"
-import { onReset, ResultsState, resultsState$ } from "@/state"
-import { map } from "rxjs"
+import {
+  state,
+  SUSPENSE,
+  useStateObservable,
+  withDefault,
+} from "@react-rxjs/core"
+import {
+  onReset,
+  pair$,
+  ResultsState,
+  resultsState$,
+  onUserSelection,
+} from "@/state"
+import { filter, map, noop } from "rxjs"
 import Hero from "@/Components/Hero"
 import Header from "@/Components/Header"
 
@@ -22,24 +31,34 @@ const sections = {
 
 const Field: React.FC<{
   field: keyof ValidatorChoice["values"]
-  data?: ValidatorChoice["values"]
-}> = ({ data, field }) => {
-  const value = data?.[field]
-  if (value == null) return loading
+  validator: ValidatorChoice["values"] | null
+}> = ({ validator, field }) => {
+  if (!validator) return <>&nbsp;</>
   const append =
     field === "selfStake" || field === "totalStake"
       ? " DOT"
       : field === "comission"
       ? "%"
       : ""
-  return <>{value + append}</>
+  return <>{validator[field] + append}</>
 }
 
+const getValidator$ = state(
+  (kind: "a" | "b") =>
+    pair$.pipe(
+      filter((pair): pair is Pair => pair !== SUSPENSE),
+      map((pair) => pair[kind]),
+    ),
+  null,
+)
+
 const Column: React.FC<{
+  kind: "a" | "b"
   right?: boolean
-  data?: ValidatorChoice["values"]
-  onSelect?: () => void
-}> = ({ right, data, onSelect }) => {
+}> = ({ right, kind }) => {
+  const validator = useStateObservable(getValidator$(kind))
+  const onSelect = validator ? () => onUserSelection(validator) : noop
+
   return (
     <div className="flex flex-col w-full gap-6">
       <div
@@ -60,15 +79,15 @@ const Column: React.FC<{
             right ? "items-start" : "items-end"
           } `}
         >
-          {Object.entries(sections).map(([key], index) => (
+          {Object.entries(sections).map(([key], index, arr) => (
             <div
               key={key}
               className={`w-full body-2 flex flex-col gap-4 ${
                 right ? "pr-6 items-start" : "pl-6 items-end"
               }`}
             >
-              <Field data={data} field={key as any} />
-              {index < Object.entries(sections).length - 1 ? (
+              <Field validator={validator?.values ?? null} field={key as any} />
+              {index < arr.length - 1 ? (
                 <div className="w-full h-[1px] bg-gray-200" />
               ) : null}
             </div>
@@ -119,12 +138,25 @@ const isDone$ = resultsState$.pipeState(
   withDefault(false),
 )
 
-export const ChooseValidator: React.FC<{
-  onSelectA: () => void
-  onSelectB: () => void
-  a?: ValidatorChoice["values"]
-  b?: ValidatorChoice["values"]
-}> = ({ a, b, onSelectA, onSelectB }) => {
+const isLoading$ = pair$.pipeState(
+  map((pair) => pair === SUSPENSE),
+  withDefault(true),
+)
+
+const Picker: React.FC = () => {
+  const isLoading = useStateObservable(isLoading$)
+
+  return (
+    <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
+      {isLoading ? null : ""}
+      <Column kind="a" />
+      <Center />
+      <Column kind="b" right />
+    </div>
+  )
+}
+
+export const ChooseValidator: React.FC = () => {
   const isDone = useStateObservable(isDone$)
 
   return (
@@ -132,18 +164,14 @@ export const ChooseValidator: React.FC<{
       <Header />
       <Hero />
       <div className="h-fit flex gap-16">
-        {!isDone ? (
-          <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
-            <Column data={a} onSelect={onSelectA} />
-            <Center />
-            <Column data={b} onSelect={onSelectB} right />
-          </div>
-        ) : (
+        {isDone ? (
           <div className="w-full bg-gray-200 rounded-lg flex items-center justify-center">
             <Button secondary width="fit" onClick={onReset}>
               Start over
             </Button>
           </div>
+        ) : (
+          <Picker />
         )}
         <div className="w-full flex flex-col gap-16">
           <div className="flex flex-col gap-4">
