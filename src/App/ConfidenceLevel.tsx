@@ -1,5 +1,5 @@
 import { latestQuality$ } from "@/state"
-import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid"
+import { ArrowDownIcon, ArrowUpIcon } from "../Assets/Icons"
 import { useStateObservable, withDefault } from "@react-rxjs/core"
 import { map, scan } from "rxjs"
 import chroma from "chroma-js"
@@ -34,7 +34,7 @@ export const ConfindenceLevel: React.FC = () => {
 
   return (
     <div className="flex gap-4 items-center">
-      <div className="flex gap-3 w-full h-fit items-center bg-gray-200 rounded-full overflow-clip">
+      <div className="flex gap-3 w-full h-fit items-center bg-bg-dip rounded-full overflow-clip">
         {current < 0.85 ? (
           <>
             <div
@@ -70,9 +70,14 @@ export const ConfindenceLevel: React.FC = () => {
         <p
           className={classNames(
             increase ? "text-green-600" : "text-red-600",
-            "ml-2 flex items-center font-unbounded text-h4 w-[84px] justify-end",
+            "ml-2 flex gap-2 items-center font-unbounded text-h4 w-[84px] justify-end",
           )}
         >
+          <span className="sr-only">
+            {" "}
+            {increase ? "Increased" : "Decreased"} by{" "}
+          </span>
+          {asPercent(Math.abs(current - prev))}
           {increase ? (
             <ArrowUpIcon
               className="h-5 w-5 flex-shrink-0 self-center text-green-500"
@@ -84,11 +89,6 @@ export const ConfindenceLevel: React.FC = () => {
               aria-hidden="true"
             />
           )}
-          <span className="sr-only">
-            {" "}
-            {increase ? "Increased" : "Decreased"} by{" "}
-          </span>
-          {asPercent(Math.abs(current - prev))}
         </p>
       ) : null}
     </div>

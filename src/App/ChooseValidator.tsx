@@ -19,6 +19,7 @@ import {
 import { filter, map, noop } from "rxjs"
 import Hero from "@/Components/Hero"
 import Header from "@/Components/Header"
+import Spinner from "@/Assets/Spinner"
 
 const sections = {
   clusterSize: "Cluster Size",
@@ -147,11 +148,21 @@ const Picker: React.FC = () => {
   const isLoading = useStateObservable(isLoading$)
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg overflow-clip flex h-fit">
-      {isLoading ? null : ""}
+    <div
+      className={`w-full bg-white rounded-lg overflow-clip flex relative ${
+        isLoading ? "shadow-sm" : "shadow-lg"
+      } transition-all duration-50`}
+    >
       <Column kind="a" />
       <Center />
       <Column kind="b" right />
+      {isLoading ? (
+        <div className="flex flex-col p-[116px] justify-start items-center w-full h-full animate-[blur_0.55s] animate-[fadeIn_0.55s] backdrop-blur-[16px] bg-[rgba(245,244,244,0.6)] top-0 left-0 absolute">
+          <Spinner />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   )
 }
@@ -160,12 +171,12 @@ export const ChooseValidator: React.FC = () => {
   const isDone = useStateObservable(isDone$)
 
   return (
-    <div className="flex flex-col gap-18 bg-bg-default py-4 px-16 h-screen">
+    <div className="flex flex-col gap-8 bg-bg-default pb-24 px-16 h-screen">
       <Header />
       <Hero />
       <div className="h-fit flex gap-16">
         {isDone ? (
-          <div className="w-full bg-gray-200 rounded-lg flex items-center justify-center">
+          <div className="w-full bg-bg-dip rounded-lg flex flex-col items-center justify-start py-[116px] relative">
             <Button secondary width="fit" onClick={onReset}>
               Start over
             </Button>
