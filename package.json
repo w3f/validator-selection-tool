@@ -24,11 +24,17 @@
     "@polkadot/react-identicon": "^3.0.2",
     "@react-rxjs/core": "^0.10.4",
     "@react-rxjs/utils": "^0.9.5",
+    "@unstoppablejs/client": "^0.2.1",
+    "@unstoppablejs/sc-provider": "^0.0.1",
+    "@unstoppablejs/substrate-bindings": "^0.0.1-rc.2",
+    "@unstoppablejs/utils": "^1.1.0",
+    "@unstoppablejs/ws-provider": "^0.0.1",
     "chroma-js": "^2.4.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-error-boundary": "^3.1.4",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "scale-ts": "^0.2.11"
   },
   "devDependencies": {
     "@jest/globals": "^28.1.0",

@@ -1,0 +1,1 @@
+export { getValidators } from "./getValidators"
