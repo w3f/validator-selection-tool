@@ -1,14 +1,8 @@
-import { Pair, ValidatorChoice } from "@/api"
 import { ConfindenceLevel } from "./ConfidenceLevel"
 import { AccountIcon } from "@/Components/AccountIcon"
 import { Results } from "./Results"
 import Button from "@/Components/Button"
-import {
-  state,
-  SUSPENSE,
-  useStateObservable,
-  withDefault,
-} from "@react-rxjs/core"
+import { state, useStateObservable, withDefault } from "@react-rxjs/core"
 import {
   onReset,
   pair$,
@@ -16,40 +10,31 @@ import {
   resultsState$,
   onUserSelection,
 } from "@/state"
-import { filter, map, noop } from "rxjs"
+import { map, noop } from "rxjs"
 import Hero from "@/Components/Hero"
 import Header from "@/Components/Header"
-import Spinner from "@/Assets/Spinner"
+import { ValidatorData } from "@/api"
 
 const sections = {
+  votes: "Votes",
   clusterSize: "Cluster Size",
-  comission: "Comission",
-  eraPoints: "Era Points",
+  commission: "Commission",
+  avgEraPoints: "Avg. Era Points",
   selfStake: "Self Stake",
-  totalStake: "Total Stake",
-  voters: "Voters",
 } as const
 
 const Field: React.FC<{
-  field: keyof ValidatorChoice["values"]
-  validator: ValidatorChoice["values"] | null
+  field: keyof ValidatorData
+  validator: ValidatorData | null
 }> = ({ validator, field }) => {
   if (!validator) return <>&nbsp;</>
   const append =
-    field === "selfStake" || field === "totalStake"
-      ? " DOT"
-      : field === "comission"
-      ? "%"
-      : ""
+    field === "selfStake" ? " DOT" : field === "commission" ? "%" : ""
   return <>{validator[field] + append}</>
 }
 
 const getValidator$ = state(
-  (kind: "a" | "b") =>
-    pair$.pipe(
-      filter((pair): pair is Pair => pair !== SUSPENSE),
-      map((pair) => pair[kind]),
-    ),
+  (kind: "a" | "b") => pair$.pipe(map(({ pair }) => pair && pair[kind])),
   null,
 )
 
@@ -58,7 +43,7 @@ const Column: React.FC<{
   right?: boolean
 }> = ({ right, kind }) => {
   const validator = useStateObservable(getValidator$(kind))
-  const onSelect = validator ? () => onUserSelection(validator) : noop
+  const onSelect = validator ? () => onUserSelection(kind) : noop
 
   return (
     <div className="flex flex-col w-full gap-6">
@@ -87,7 +72,7 @@ const Column: React.FC<{
                 right ? "pr-6 items-start" : "pl-6 items-end"
               }`}
             >
-              <Field validator={validator?.values ?? null} field={key as any} />
+              <Field validator={validator} field={key as any} />
               {index < arr.length - 1 ? (
                 <div className="w-full h-[1px] bg-gray-200" />
               ) : null}
@@ -139,30 +124,14 @@ const isDone$ = resultsState$.pipeState(
   withDefault(false),
 )
 
-const isLoading$ = pair$.pipeState(
-  map((pair) => pair === SUSPENSE),
-  withDefault(true),
-)
-
 const Picker: React.FC = () => {
-  const isLoading = useStateObservable(isLoading$)
-
   return (
     <div
-      className={`w-full bg-white rounded-lg overflow-clip flex relative ${
-        isLoading ? "shadow-sm" : "shadow-lg"
-      } transition-all duration-50`}
+      className={`w-full bg-white rounded-lg overflow-clip flex relative shadow-lg transition-all duration-50`}
     >
       <Column kind="a" />
       <Center />
       <Column kind="b" right />
-      {isLoading ? (
-        <div className="flex flex-col p-[116px] justify-start items-center w-full h-full animate-[blur_0.55s] animate-[fadeIn_0.55s] backdrop-blur-[16px] bg-[rgba(245,244,244,0.6)] top-0 left-0 absolute">
-          <Spinner />
-        </div>
-      ) : (
-        ""
-      )}
     </div>
   )
 }

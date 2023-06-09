@@ -28,8 +28,6 @@ export const ConfindenceLevel: React.FC = () => {
   const current = useStateObservable(latestQuality$)
   const prev = useStateObservable(prev$)
 
-  console.log(f(current).toString())
-
   const increase: boolean = prev !== null && current > prev
 
   return (

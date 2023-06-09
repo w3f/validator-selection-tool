@@ -1,11 +1,9 @@
 import { state, StateObservable, SUSPENSE } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
-  exhaustMap,
   concat,
   of,
   map,
-  filter,
   withLatestFrom,
   takeUntil,
   repeat,
@@ -13,8 +11,9 @@ import {
   pipe,
   Observable,
   switchMap,
+  scan,
 } from "rxjs"
-import { nextPair, Pair, ranking, ValidatorChoice } from "./api"
+import { maxQuestionsIdx, getPair, ranking } from "./api"
 
 export const [reset$, onReset] = createSignal<void>()
 
@@ -23,23 +22,29 @@ const withReset: <T>(source: Observable<T>) => Observable<T> = pipe(
   repeat(),
 )
 
-const [userSelection$, onUserSelection] = createSignal<ValidatorChoice>()
+const [userSelection$, onUserSelection] = createSignal<"a" | "b">()
 export { onUserSelection }
 
-export const pair$ = state(
+const currentQuestionId$ = state(
   userSelection$.pipe(
-    startWith(null),
-    exhaustMap((selection) => concat(of(SUSPENSE), nextPair(selection))),
+    scan((acc, current) => {
+      const result = (acc + 1) * 2 + (current === "a" ? 0 : 1) - 1
+      const finalResult = result > maxQuestionsIdx ? acc : result
+      return finalResult
+    }, 0),
+    startWith(0),
     withReset,
   ),
 )
 
+export const pair$ = currentQuestionId$.pipeState(map(getPair), withReset)
+
 export const latestQuality$ = pair$.pipeState(
-  filter((x): x is Pair => x !== SUSPENSE),
   map((x) => x.quality),
   startWith(0),
   withReset,
 )
+latestQuality$.subscribe()
 
 export enum ResultsState {
   INIT = 0,
@@ -61,10 +66,10 @@ resultsState$.subscribe()
 
 export const results$ = state(
   resultsState$.pipe(
-    withLatestFrom(userSelection$),
-    switchMap(([rState, choice]) =>
+    withLatestFrom(currentQuestionId$),
+    switchMap(([rState, currentQuestionId]) =>
       rState > ResultsState.INSUFICIENT
-        ? concat(of(SUSPENSE), ranking(choice))
+        ? concat(of(SUSPENSE), ranking(currentQuestionId))
         : of(null),
     ),
     startWith(null),
