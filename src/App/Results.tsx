@@ -3,22 +3,31 @@ import { Subscribe, SUSPENSE } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { Loading } from "./Loading"
 import { AccountIcon } from "@/Components/AccountIcon"
+import { Field, sections } from "./ChooseValidator"
 
 const jsxResults$ = results$.pipeState(
-  map((x) =>
-    Array.isArray(x) ? (
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
-        {x.slice(0, 15).map(({ address }) => (
+  map((validators) =>
+    Array.isArray(validators) ? (
+      <div className="flex flex-col gap-2 mt-4 text-body-2">
+        {validators.slice(0, 15).map((validator) => (
           <div
-            key={address}
-            className="flex p-2 border-[1px] rounded-md justify-center"
+            key={validator.address}
+            className="flex items-center py-3 border-b-[1px]"
           >
-            <AccountIcon small address={address} />
+            <AccountIcon small address={validator.address} />
+            {Object.entries(sections).map(([key]) => (
+              <div
+                key={key}
+                className="w-full body-2 flex flex-col gap-4 whitespace-nowrap h-fit items-center"
+              >
+                <Field validator={validator} field={key as any} />
+              </div>
+            ))}
           </div>
         ))}
       </div>
-    ) : x === SUSPENSE ? (
-      x
+    ) : validators === SUSPENSE ? (
+      validators
     ) : (
       <span className="text-body-2 text-gray-300">
         Not enough confidence to show results. Keep going!
