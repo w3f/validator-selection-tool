@@ -9,6 +9,7 @@ import {
   ResultsState,
   resultsState$,
   onUserSelection,
+  isToughCookie$,
 } from "@/state"
 import { map, noop } from "rxjs"
 import Hero from "@/Components/Hero"
@@ -138,11 +139,13 @@ const Picker: React.FC = () => {
 
 export const ChooseValidator: React.FC = () => {
   const isDone = useStateObservable(isDone$)
+  const isToughCookie = useStateObservable(isToughCookie$)
 
   return (
     <div className="flex flex-col gap-8 bg-bg-default pb-24 px-16 h-screen">
       <Header />
       <Hero />
+      {isToughCookie ? <div>WOW! You are a tough MF!</div> : null}
       <div className="h-fit flex gap-16">
         {isDone ? (
           <div className="w-full bg-bg-dip rounded-lg flex flex-col items-center justify-start py-[116px] relative">
