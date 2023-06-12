@@ -1,4 +1,4 @@
-import { state, StateObservable, SUSPENSE } from "@react-rxjs/core"
+import { state, StateObservable, SUSPENSE, withDefault } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
   concat,
@@ -38,6 +38,11 @@ const currentQuestionId$ = state(
 )
 
 export const pair$ = currentQuestionId$.pipeState(map(getPair), withReset)
+
+export const isToughCookie$ = pair$.pipeState(
+  map((x) => x.pair === null),
+  withDefault(false),
+)
 
 export const latestQuality$ = pair$.pipeState(
   map((x) => x.quality),
