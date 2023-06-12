@@ -15,10 +15,14 @@ export function AccountIcon({
     <div
       className={`flex ${
         small ? "flex-row gap-1" : "flex-col gap-2"
-      } items-center `}
+      } items-center`}
     >
       <Identicon value={address} theme="polkadot" size={small ? 24 : 40} />
-      <div className={`${small ? "text-body-2 " : "text-body"} font-semibold`}>
+      <div
+        className={`${
+          small ? "text-body-2 " : "text-body"
+        } font-semibold whitespace-nowrap`}
+      >
         {stringShorten(btnTitle, 4)}
       </div>
     </div>

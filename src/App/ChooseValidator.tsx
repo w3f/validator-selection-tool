@@ -16,7 +16,7 @@ import Hero from "@/Components/Hero"
 import Header from "@/Components/Header"
 import { ValidatorData } from "@/api"
 
-const sections = {
+export const sections = {
   votes: "Votes",
   clusterSize: "Cluster Size",
   commission: "Commission",
@@ -24,7 +24,7 @@ const sections = {
   selfStake: "Self Stake",
 } as const
 
-const Field: React.FC<{
+export const Field: React.FC<{
   field: keyof ValidatorData
   validator: ValidatorData | null
 }> = ({ validator, field }) => {
@@ -128,7 +128,7 @@ const isDone$ = resultsState$.pipeState(
 const Picker: React.FC = () => {
   return (
     <div
-      className={`w-full bg-white rounded-lg overflow-clip flex relative shadow-lg transition-all duration-50`}
+      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex relative shadow-lg transition-all duration-50`}
     >
       <Column kind="a" />
       <Center />
