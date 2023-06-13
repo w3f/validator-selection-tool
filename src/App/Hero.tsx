@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
-    <div className="w-full mb-4">
-      <div className="flex flex-col items-start gap-4 pr-24 pl-6 mb-4">
+    <div className="w-full h-full mb-4">
+      <div className="h-full flex flex-col items-start justify-center gap-4 pr-24 pl-6 mb-4">
         <span className="text-h3 font-unbounded">
           Refine your validator set
         </span>

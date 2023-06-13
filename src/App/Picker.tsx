@@ -97,7 +97,7 @@ const Center: React.FC<{}> = () => {
 export default function Picker() {
   return (
     <div
-      className={`w-full sticky top-24 h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex shadow-lg`}
+      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex shadow-lg`}
     >
       <Column kind="a" />
       <Center />

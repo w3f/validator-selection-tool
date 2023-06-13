@@ -76,10 +76,10 @@ export const Results: React.FC = () => {
   const isInsufficient = useStateObservable(isInsufficient$)
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="h-full w-full flex flex-col gap-3 pb-4">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-2">
-          <div className="flex h-6 items-center justify-between">
+          <div className="h-fit flex items-center justify-between">
             <span className="text-h5 font-unbounded">Results</span>
             <Reset />
           </div>
@@ -112,7 +112,9 @@ export const Results: React.FC = () => {
           )}
         </div>
       </div>
-      <Subscribe fallback={<Loading size={16} />}>{jsxResults$}</Subscribe>
+      <div className="h-full overflow-scroll">
+        <Subscribe fallback={<Loading size={16} />}>{jsxResults$}</Subscribe>
+      </div>
     </div>
   )
 }
