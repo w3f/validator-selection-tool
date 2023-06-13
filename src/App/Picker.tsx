@@ -1,19 +1,8 @@
-import { ConfindenceLevel } from "./ConfidenceLevel"
 import { AccountIcon } from "@/Components/AccountIcon"
-import { Results } from "./Results"
 import Button from "@/Components/Button"
 import { state, useStateObservable, withDefault } from "@react-rxjs/core"
-import {
-  onReset,
-  pair$,
-  ResultsState,
-  resultsState$,
-  onUserSelection,
-  isToughCookie$,
-} from "@/state"
+import { pair$, ResultsState, resultsState$, onUserSelection } from "@/state"
 import { map, noop } from "rxjs"
-import Hero from "@/Components/Hero"
-import Header from "@/Components/Header"
 import { ValidatorData } from "@/api"
 
 export const sections = {
@@ -105,71 +94,14 @@ const Center: React.FC<{}> = () => {
     </div>
   )
 }
-
-const isInit$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.INIT),
-  withDefault(true),
-)
-
-const Reset: React.FC = () => {
-  const isInit = useStateObservable(isInit$)
-  return isInit ? null : (
-    <Button secondary onClick={() => onReset()} width="fit">
-      Reset
-    </Button>
-  )
-}
-
-const isDone$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.PERFECT),
-  withDefault(false),
-)
-
-const Picker: React.FC = () => {
+export default function Picker() {
   return (
     <div
-      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex relative shadow-lg transition-all duration-50`}
+      className={`w-full sticky top-24 h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex shadow-lg`}
     >
       <Column kind="a" />
       <Center />
       <Column kind="b" right />
-    </div>
-  )
-}
-
-export const ChooseValidator: React.FC = () => {
-  const isDone = useStateObservable(isDone$)
-  const isToughCookie = useStateObservable(isToughCookie$)
-
-  return (
-    <div className="flex flex-col gap-8 bg-bg-default pb-24 px-16 h-screen">
-      <Header />
-      <Hero />
-      {isToughCookie ? <div>WOW! You are a tough MF!</div> : null}
-      <div className="h-fit flex gap-16">
-        {isDone ? (
-          <div className="w-full bg-bg-dip rounded-lg flex flex-col items-center justify-start py-[116px] relative">
-            <Button secondary width="fit" onClick={onReset}>
-              Start over
-            </Button>
-          </div>
-        ) : (
-          <Picker />
-        )}
-        <div className="w-full flex flex-col gap-16">
-          <div className="flex flex-col gap-4">
-            <span className="text-h5 font-unbounded">Confidence Level</span>
-            <ConfindenceLevel />
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex h-6 items-center justify-between">
-              <span className="text-h5 font-unbounded">Results</span>
-              <Reset />
-            </div>
-            <Results />
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
