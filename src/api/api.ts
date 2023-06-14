@@ -1,5 +1,5 @@
 import { validators, x as xPointsRaw, questions } from "./data.json"
-import type { Pair, ValidatorData } from "./types"
+import type { Pair, ScoredValidator, ValidatorData } from "./types"
 import { linearInterpolation } from "./linearInterpolation"
 
 type DataPoints = [Array<number>, Array<number>, Array<number>, Array<number>]
@@ -11,29 +11,6 @@ function getValidatorDataFromIdx(idx: number): ValidatorData {
 }
 
 const add = (a: number, b: number) => a + b
-
-export function getSortingFunctionForQuestionId(id: number) {
-  const yPoints = questions[id][2] as DataPoints
-  const xPoints = xPointsRaw as DataPoints
-
-  const pointsByField = yPoints.map((ys, idxField) =>
-    ys.map((y, idx) => ({ y, x: xPoints[idxField][idx] })),
-  )
-
-  const fns = pointsByField.map(linearInterpolation)
-
-  return (a: ValidatorData, b: ValidatorData) => {
-    const aScore = Object.values(a)
-      .map((val, idx) => fns[idx](val))
-      .reduce(add)
-
-    const bScore = Object.values(b)
-      .map((val, idx) => fns[idx](val))
-      .reduce(add)
-
-    return aScore - bScore
-  }
-}
 
 const rawQualityToNumber = (rawQuality: string | number) => {
   const asNumberQuality = Number(rawQuality)
@@ -60,19 +37,36 @@ export function getPair(id: number): Pair {
 
 export const maxQuestionsIdx = questions.length - 1
 
-const validatorsPromise = import("./validators")
-  .then((x) => x.getValidators())
-  .then((v) => {
-    console.log("got the validators", v)
-    return v
-  })
+const validatorsPromise = import("./validators").then(async (x) =>
+  x.getValidators(),
+)
 
-export async function ranking(questionId: number): Promise<Array<string>> {
-  const sortFn = getSortingFunctionForQuestionId(questionId)
+function getScoreFunctionForQuestionId(id: number) {
+  const yPoints = questions[id][2] as DataPoints
+  const xPoints = xPointsRaw as DataPoints
 
-  const validators = await validatorsPromise
-
-  return Object.keys(validators).sort((a, b) =>
-    sortFn(validators[a], validators[b]),
+  const pointsByField = yPoints.map((ys, idxField) =>
+    ys.map((y, idx) => ({ y, x: xPoints[idxField][idx] })),
   )
+
+  const fns = pointsByField.map(linearInterpolation)
+
+  return (validator: ValidatorData) =>
+    Object.values(validator)
+      .map((val, idx) => fns[idx](val))
+      .reduce(add)
+}
+
+export async function ranking(
+  questionId: number,
+): Promise<Array<ScoredValidator>> {
+  const getScore = getScoreFunctionForQuestionId(questionId)
+
+  return Object.entries(await validatorsPromise)
+    .map(([address, validator]) => ({
+      address,
+      score: getScore(validator),
+      ...validator,
+    }))
+    .sort((a, b) => a.score - b.score)
 }
