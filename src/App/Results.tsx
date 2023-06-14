@@ -8,12 +8,12 @@ const jsxResults$ = results$.pipeState(
   map((x) =>
     Array.isArray(x) ? (
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
-        {x.slice(0, 15).map((result) => (
+        {x.slice(0, 15).map(({ address }) => (
           <div
-            key={result}
+            key={address}
             className="flex p-2 border-[1px] rounded-md justify-center"
           >
-            <AccountIcon small address={result} />
+            <AccountIcon small address={address} />
           </div>
         ))}
       </div>

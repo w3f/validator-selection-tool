@@ -6,6 +6,11 @@ export interface ValidatorData {
   selfStake: number
 }
 
+export type ScoredValidator = ValidatorData & {
+  address: string
+  score: number
+}
+
 export interface Pair {
   id: number
   pair: null | {
