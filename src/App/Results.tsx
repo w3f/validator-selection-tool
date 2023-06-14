@@ -64,7 +64,7 @@ const isPerfect$ = resultsState$.pipeState(
 const Reset: React.FC = () => {
   const isInit = useStateObservable(isInit$)
   return isInit ? null : (
-    <Button secondary onClick={() => onReset()} width="fit">
+    <Button secondary onClick={() => onReset()}>
       Reset
     </Button>
   )
@@ -76,7 +76,7 @@ export const Results: React.FC = () => {
   const isInsufficient = useStateObservable(isInsufficient$)
 
   return (
-    <div className="h-full w-full flex flex-col gap-3 pb-4">
+    <div className="h-full w-full flex flex-col gap-3 pb-4 transition-all ">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-2">
           <div className="h-fit flex items-center justify-between">
