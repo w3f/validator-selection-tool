@@ -1,6 +1,6 @@
 import { validators, x as xPointsRaw, questions } from "./data.json"
 import type { Pair, ValidatorData } from "./types"
-import { linearInterpolation } from "..//utils"
+import { linearInterpolation } from "./linearInterpolation"
 
 type DataPoints = [Array<number>, Array<number>, Array<number>, Array<number>]
 
