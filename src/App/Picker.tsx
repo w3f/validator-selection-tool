@@ -83,7 +83,7 @@ const Center: React.FC<{}> = () => {
         <div key={key} className="w-full flex flex-col items-center gap-4">
           <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-6">
             {title}
-            <Tooltip />
+            <Tooltip>Hey, I'm a tooltip!</Tooltip>
           </div>
           {index < Object.entries(sections).length - 1 ? (
             <div className="w-full h-[1px] bg-gray-200" />

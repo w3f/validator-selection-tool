@@ -1,4 +1,10 @@
-import { results$, onReset, resultsState$, ResultsState } from "@/state"
+import {
+  results$,
+  onReset,
+  resultsState$,
+  ResultsState,
+  nSelected$,
+} from "@/state"
 import {
   Subscribe,
   SUSPENSE,
@@ -84,8 +90,10 @@ export const Results: React.FC = () => {
             <Reset />
           </div>
         </div>
-        <div className="flex gap-2 items-center text-body-2">
-          <span className="font-inter">Confidence:</span>
+        <div className="flex gap-1.5 items-center text-body-2">
+          <span>Selected:</span>
+          <span className="font-semibold w-6 text-start">{nSelected$}</span>
+          <span>Confidence:</span>
           {isInsufficient && (
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 rounded-full  bg-orange-400" />

@@ -44,6 +44,12 @@ export const isToughCookie$ = pair$.pipeState(
   withDefault(false),
 )
 
+export const nSelected$ = pair$.pipeState(
+  map((_, idx) => idx + 1),
+  withReset,
+  withDefault(0),
+)
+
 export const latestQuality$ = pair$.pipeState(
   map((x) => x.quality),
   startWith(0),
