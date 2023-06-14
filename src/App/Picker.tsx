@@ -74,10 +74,12 @@ const Column: React.FC<{
 const Center: React.FC<{}> = () => {
   return (
     <div className="flex flex-col items-center gap-4 pb-6 text-body-2">
-      <div className="flex w-full h-full flex-col items-center py-6 px-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
-        <span className="py-3 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
+      <div className="flex w-full h-full items-center py-6 px-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
+        <div className="w-full h-[2px] flex items-center gap-2 bg-secondary" />
+        <span className="py-3 px-6 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
           VS
         </span>
+        <div className="w-full h-[2px] flex items-center gap-2 bg-secondary" />
       </div>
       {Object.entries(sections).map(([key, title], index) => (
         <div key={key} className="w-full flex flex-col items-center gap-4">
