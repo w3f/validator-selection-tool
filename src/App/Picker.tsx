@@ -1,9 +1,9 @@
-import { AccountIcon } from "@/Components/AccountIcon"
 import Button from "@/Components/Button"
-import { state, useStateObservable, withDefault } from "@react-rxjs/core"
-import { pair$, ResultsState, resultsState$, onUserSelection } from "@/state"
+import { state, useStateObservable } from "@react-rxjs/core"
+import { pair$, onUserSelection } from "@/state"
 import { map, noop } from "rxjs"
 import { ValidatorData } from "@/api"
+import Tooltip from "@/Components/Tooltip"
 
 export const sections = {
   votes: "Votes",
@@ -36,61 +36,60 @@ const Column: React.FC<{
   const onSelect = validator ? () => onUserSelection(kind) : noop
 
   return (
-    <div className="flex flex-col w-full gap-6">
+    <div
+      className={`w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
+        right ? "items-start" : "items-end"
+      } `}
+    >
       <div
-        className={`flex flex-col py-6 gap-6 items-center ${
+        className={`w-full flex flex-col py-6 gap-6 items-center ${
           right ? "pr-6 bg-p-purple-100" : "pl-6 bg-p-pink-100"
         }`}
       >
-        <div className="flex flex-col gap-4 items-center">
-          <AccountIcon address="16ccn3xe5tAeR8kvzCRTcqHZjMJHvuF2pnLfTqyF1EmMusCU" />
-        </div>
-        <Button onClick={onSelect} secondary={right}>
-          Select
+        <Button
+          onClick={onSelect}
+          secondary={right}
+          fullWidth
+          className="font-unbounded text-body-1 text-white"
+        >
+          {kind === "a" ? "A" : "B"}
         </Button>
       </div>
-      {
+      {Object.entries(sections).map(([key], index, arr) => (
         <div
-          className={`flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
-            right ? "items-start" : "items-end"
-          } `}
+          key={key}
+          className={`w-full body-2 flex flex-col gap-4 ${
+            right ? "pr-6 items-start" : "pl-6 items-end"
+          }`}
         >
-          {Object.entries(sections).map(([key], index, arr) => (
-            <div
-              key={key}
-              className={`w-full body-2 flex flex-col gap-4 ${
-                right ? "pr-6 items-start" : "pl-6 items-end"
-              }`}
-            >
-              <Field validator={validator} field={key as any} />
-              {index < arr.length - 1 ? (
-                <div className="w-full h-[1px] bg-gray-200" />
-              ) : null}
-            </div>
-          ))}
+          <Field validator={validator} field={key as any} />
+          {index < arr.length - 1 ? (
+            <div className="w-full h-[1px] bg-gray-200" />
+          ) : null}
         </div>
-      }
+      ))}
     </div>
   )
 }
 const Center: React.FC<{}> = () => {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex h-full flex-col items-center justify-end py-6 px-10 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
-        <span className="py-2 px-4 rounded-full shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
+    <div className="flex flex-col items-center gap-4 pb-6 text-body-2">
+      <div className="flex w-full h-full flex-col items-center py-6 px-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
+        <span className="py-3 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
           VS
         </span>
       </div>
-      <div className="flex flex-col items-center gap-4 pb-6 text-body-2">
-        {Object.entries(sections).map(([key, title], index) => (
-          <div key={key} className="w-full flex flex-col items-center gap-4">
+      {Object.entries(sections).map(([key, title], index) => (
+        <div key={key} className="w-full flex flex-col items-center gap-4">
+          <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-6">
             {title}
-            {index < Object.entries(sections).length - 1 ? (
-              <div className="w-full h-[1px] bg-gray-200" />
-            ) : null}
+            <Tooltip />
           </div>
-        ))}
-      </div>
+          {index < Object.entries(sections).length - 1 ? (
+            <div className="w-full h-[1px] bg-gray-200" />
+          ) : null}
+        </div>
+      ))}
     </div>
   )
 }
