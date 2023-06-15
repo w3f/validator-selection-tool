@@ -64,3 +64,21 @@ export function InformationalIcon({ size, className }: IconProps) {
     </svg>
   )
 }
+
+export function CheckIcon({ size, className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ? size : "16"}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 28 28"
+    >
+      <path d="M3 13.946L10.766 21 25 7" data-nofill="true"></path>
+    </svg>
+  )
+}

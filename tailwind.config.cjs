@@ -17,6 +17,9 @@ module.exports = {
         h4: "1.25rem",
         h5: "1rem",
       },
+      lineHeight: {
+        "body-2": "2rem",
+      },
       spacing: {
         18: "4.5rem",
         112: "28rem",

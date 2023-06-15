@@ -1,21 +1,9 @@
-import {
-  results$,
-  onReset,
-  resultsState$,
-  ResultsState,
-  nSelected$,
-} from "@/state"
-import {
-  Subscribe,
-  SUSPENSE,
-  useStateObservable,
-  withDefault,
-} from "@react-rxjs/core"
+import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
+import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { Loading } from "../Components/Loading"
-import { AccountIcon } from "../Components/AccountIcon"
-import { Field, sections } from "./Picker"
 import Button from "../Components/Button"
+import Table from "./Table"
 
 const isInit$ = resultsState$.pipeState(
   map((x) => x === ResultsState.INIT),
@@ -35,80 +23,6 @@ const isGoodEnough$ = resultsState$.pipeState(
 const isPerfect$ = resultsState$.pipeState(
   map((x) => x === ResultsState.PERFECT),
   withDefault(false),
-)
-
-const jsxResults$ = results$.pipeState(
-  map((validators) =>
-    Array.isArray(validators) ? (
-      <div className="whitespace-nowrap text-body-2 flex ">
-        <div className="w-full flex flex-col gap-2">
-          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default">
-            Account
-          </span>
-          {validators.slice(0, 15).map((validator) => (
-            <div
-              key={validator.address}
-              className="w-full flex items-center py-3 pr-8 border-b-[1px]"
-            >
-              <AccountIcon
-                small
-                showAddress={isPerfect$.getValue()}
-                address={validator.address}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="w-full flex flex-col gap-2 ">
-          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
-            Score
-          </span>
-          {validators.slice(0, 15).map((validator) => (
-            <div
-              key={validator.address}
-              className="w-full flex items-center py-3 border-b-[1px] pr-4"
-            >
-              {validator.score.toFixed(2)}
-            </div>
-          ))}
-        </div>
-        {Object.entries(sections).map(([key, title], index) => (
-          <div className="w-full flex flex-col gap-2">
-            <span
-              className={`sticky top-0 text-caption text-gray-400 bg-bg-default ${
-                index === Object.values(sections).length - 1
-                  ? "text-right w-full"
-                  : "pr-4"
-              }`}
-            >
-              {title}
-            </span>
-            {validators.slice(0, 15).map((validator) => (
-              <div
-                key={validator.address}
-                className="w-full flex items-center py-3 border-b-[1px]"
-              >
-                <Field
-                  className={
-                    index === Object.values(sections).length - 1
-                      ? "text-right w-full"
-                      : "pr-4"
-                  }
-                  validator={validator}
-                  field={key as any}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    ) : validators === SUSPENSE ? (
-      validators
-    ) : (
-      <span className="text-body-2 text-gray-300">
-        Not enough precision to show results. Keep going!
-      </span>
-    ),
-  ),
 )
 
 const Reset: React.FC = () => {
@@ -163,7 +77,9 @@ export const Results: React.FC = () => {
         </div>
       </div>
       <div className="h-full overflow-scroll">
-        <Subscribe fallback={<Loading size={16} />}>{jsxResults$}</Subscribe>
+        <Subscribe fallback={<Loading size={16} />}>
+          <Table items={16} />
+        </Subscribe>
       </div>
     </div>
   )
