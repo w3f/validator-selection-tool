@@ -13,6 +13,18 @@ export const sections = {
   selfStake: "Self Stake",
 } as const
 
+export const tooltips = {
+  votes:
+    "The number of nominators that are voting for that validator (before the election algorithm).",
+  clusterSize:
+    "The number of validators an operator has, based on simple string comparison of their names.",
+  commission: "The cut the validator takes for their services.",
+  avgEraPoints:
+    "The performance measure of a validator as average over a longer period. The higher, the better.",
+  selfStake:
+    "The amount of stake that the validator is using to nominate themselves. Can be regarded as skin-in-the-game. Generally, the higher the better.",
+} as const
+
 export const Field: React.FC<{
   field: keyof ValidatorData
   validator: ValidatorData | null
@@ -82,20 +94,24 @@ const Center: React.FC<{}> = () => {
         </span>
         <div className="w-full h-[2px] flex items-center gap-2 bg-secondary" />
       </div>
-      {Object.entries(sections).map(([key, title], index) => (
-        <div key={key} className="w-full flex flex-col items-center gap-4">
-          <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-6">
-            {title}
-            <Tooltip>Hey, I'm a tooltip!</Tooltip>
+      {Object.entries(sections).map(([key, title], index) => {
+        const typedKey = key as keyof typeof sections
+        return (
+          <div key={key} className="w-full flex flex-col items-center gap-4">
+            <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-6">
+              {title}
+              <Tooltip>{tooltips[typedKey]}</Tooltip>
+            </div>
+            {index < Object.entries(sections).length - 1 ? (
+              <div className="w-full h-[1px] bg-gray-200" />
+            ) : null}
           </div>
-          {index < Object.entries(sections).length - 1 ? (
-            <div className="w-full h-[1px] bg-gray-200" />
-          ) : null}
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
+
 export default function Picker() {
   return (
     <div
