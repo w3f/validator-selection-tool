@@ -10,7 +10,7 @@ export default function Tooltip({ children }: TooltipProps) {
 
   return (
     <div
-      className="block relative"
+      className="block relative cursor-pointer"
       onMouseEnter={() => {
         setShow(true)
       }}

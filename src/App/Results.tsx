@@ -42,7 +42,7 @@ const jsxResults$ = results$.pipeState(
       validators
     ) : (
       <span className="text-body-2 text-gray-300">
-        Not enough confidence to show results. Keep going!
+        Not enough precision to show results. Keep going!
       </span>
     ),
   ),
@@ -93,7 +93,7 @@ export const Results: React.FC = () => {
         <div className="flex gap-1.5 items-center text-body-2">
           <span>Selected:</span>
           <span className="font-semibold w-6 text-start">{nSelected$}</span>
-          <span>Confidence:</span>
+          <span>Precision:</span>
           {isInsufficient && (
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 rounded-full  bg-orange-400" />
