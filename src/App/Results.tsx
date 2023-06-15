@@ -20,19 +20,52 @@ import Button from "../Components/Button"
 const jsxResults$ = results$.pipeState(
   map((validators) =>
     Array.isArray(validators) ? (
-      <div className="flex flex-col gap-2 mt-4 text-body-2">
-        {validators.slice(0, 15).map((validator) => (
-          <div
-            key={validator.address}
-            className="flex items-center py-3 border-b-[1px]"
-          >
-            <AccountIcon small address={validator.address} />
-            {Object.entries(sections).map(([key]) => (
+      <div className="w-full whitespace-nowrap text-body-2 flex ">
+        <div className="w-full flex flex-col gap-2">
+          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default">
+            Address
+          </span>
+          {validators.slice(0, 15).map((validator) => (
+            <div
+              key={validator.address}
+              className="w-full flex items-center py-3 pr-8 border-b-[1px]"
+            >
+              <AccountIcon small address={validator.address} />
+            </div>
+          ))}
+        </div>
+        <div className="w-full flex flex-col gap-2 ">
+          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
+            Score
+          </span>
+          {validators.slice(0, 15).map((validator) => (
+            <div
+              key={validator.address}
+              className="w-full flex items-center py-3 border-b-[1px] pr-4"
+            >
+              {validator.score.toFixed(2)}
+            </div>
+          ))}
+        </div>
+        {Object.entries(sections).map(([key, title], index) => (
+          <div className="w-full flex flex-col gap-2">
+            <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
+              {title}
+            </span>
+            {validators.slice(0, 15).map((validator) => (
               <div
-                key={key}
-                className="w-full body-2 flex flex-col gap-4 whitespace-nowrap h-fit items-center"
+                key={validator.address}
+                className="w-full flex items-center py-3 border-b-[1px] pr-4"
               >
-                <Field validator={validator} field={key as any} />
+                <Field
+                  className={
+                    index === Object.values(sections).length - 1
+                      ? "text-right w-full"
+                      : ""
+                  }
+                  validator={validator}
+                  field={key as any}
+                />
               </div>
             ))}
           </div>
@@ -70,7 +103,7 @@ const isPerfect$ = resultsState$.pipeState(
 const Reset: React.FC = () => {
   const isInit = useStateObservable(isInit$)
   return isInit ? null : (
-    <Button secondary onClick={() => onReset()}>
+    <Button small secondary onClick={() => onReset()}>
       Reset
     </Button>
   )
@@ -82,13 +115,11 @@ export const Results: React.FC = () => {
   const isInsufficient = useStateObservable(isInsufficient$)
 
   return (
-    <div className="h-full w-full flex flex-col gap-3 pb-4 transition-all ">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="h-fit flex items-center justify-between">
-            <span className="text-h5 font-unbounded">Results</span>
-            <Reset />
-          </div>
+    <div className="h-full w-full flex flex-col gap-10 pb-4 transition-all ">
+      <div className="flex flex-col">
+        <div className="h-fit flex items-center justify-between">
+          <span className="text-h5 font-unbounded">Results</span>
+          <Reset />
         </div>
         <div className="flex gap-1.5 items-center text-body-2">
           <span>Selected:</span>

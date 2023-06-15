@@ -16,11 +16,12 @@ export const sections = {
 export const Field: React.FC<{
   field: keyof ValidatorData
   validator: ValidatorData | null
-}> = ({ validator, field }) => {
+  className?: string
+}> = ({ validator, field, className }) => {
   if (!validator) return <>&nbsp;</>
   const append =
     field === "selfStake" ? " DOT" : field === "commission" ? "%" : ""
-  return <>{validator[field] + append}</>
+  return <div className={className}>{validator[field] + append}</div>
 }
 
 const getValidator$ = state(

@@ -10,6 +10,7 @@ module.exports = {
         unbounded: "Unbounded",
       },
       fontSize: {
+        caption: "0.75rem",
         body: "1rem",
         "body-2": "0.875rem",
         h3: "2rem",
