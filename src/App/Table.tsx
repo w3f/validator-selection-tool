@@ -19,12 +19,13 @@ export default function Table({ items = 16 }) {
             <span className="sticky top-0 text-caption bg-bg-default border-b-[1px] pb-1 ">
               <div className="w-5 h-5 p-[2px] mr-3">
                 <input
+                  defaultChecked={true}
                   onChange={(e) => {
                     let checkboxes = document.getElementsByName(
                       "selectedAddress",
                     ) as unknown as HTMLInputElement[]
 
-                    let allChecked: boolean
+                    let allChecked = true
 
                     for (let i = 0; i < checkboxes.length; i++) {
                       checkboxes[i].checked === true
@@ -51,6 +52,7 @@ export default function Table({ items = 16 }) {
               >
                 <div className="w-5 h-5 p-[2px] mr-3">
                   <input
+                    defaultChecked={true}
                     onChange={(e) => {
                       const mainCheckbox = document.getElementsByName(
                         "mainCheckbox",

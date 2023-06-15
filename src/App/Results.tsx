@@ -57,7 +57,7 @@ export const Results: React.FC = () => {
             document.querySelectorAll(
               'input[name="selectedAddress"]:checked',
             ) as unknown as HTMLInputElement[],
-          ).map((x) => x.value),
+          ).map((checkbox) => checkbox.value),
         )
       }}
       className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
