@@ -48,11 +48,25 @@ export const Results: React.FC = () => {
 
   const [tableLength, setTableLength] = useState(1)
   return (
-    <div className="h-full w-full flex flex-col gap-10 pb-4 transition-all ">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        console.log(
+          Array.from(
+            document.querySelectorAll(
+              'input[name="selectedAddress"]:checked',
+            ) as unknown as HTMLInputElement[],
+          ).map((x) => x.value),
+        )
+      }}
+      className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
+    >
       <div className="flex flex-col">
         <div className="h-fit flex items-center justify-between">
           <span className="text-h5 font-unbounded">Results</span>
           <Reset />
+          <button type="submit">Submit</button>
         </div>
         <div className="flex gap-1.5 items-center text-body-2">
           <span>Selected:</span>
@@ -95,6 +109,6 @@ export const Results: React.FC = () => {
           </button>
         </Subscribe>
       </div>
-    </div>
+    </form>
   )
 }

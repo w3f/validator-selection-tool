@@ -17,14 +17,53 @@ export default function Table({ items = 16 }) {
         <div className="w-full whitespace-nowrap text-body-2 leading-5 flex ">
           <div className="w-fit flex flex-col gap-2">
             <span className="sticky top-0 text-caption bg-bg-default border-b-[1px] pb-1 ">
-              <CheckBox />
+              <div className="w-5 h-5 p-[2px] mr-3">
+                <input
+                  onChange={(e) => {
+                    let checkboxes = document.getElementsByName(
+                      "selectedAddress",
+                    ) as unknown as HTMLInputElement[]
+
+                    let allChecked: boolean
+
+                    for (let i = 0; i < checkboxes.length; i++) {
+                      checkboxes[i].checked === true
+                        ? (allChecked = true)
+                        : (allChecked = false)
+                    }
+
+                    checkboxes.forEach((checkbox) => {
+                      allChecked && e.currentTarget.checked === false
+                        ? (checkbox.checked = false)
+                        : (checkbox.checked = true)
+                    })
+                  }}
+                  className="w-full h-full"
+                  type="checkbox"
+                  name="mainCheckbox"
+                />
+              </div>
             </span>
             {validators.slice(0, items).map((validator) => (
               <div
                 key={validator.address}
                 className=" flex items-center pb-4 pt-3 border-b-[1px]"
               >
-                <CheckBox />
+                <div className="w-5 h-5 p-[2px] mr-3">
+                  <input
+                    onChange={(e) => {
+                      const mainCheckbox = document.getElementsByName(
+                        "mainCheckbox",
+                      ) as unknown as HTMLInputElement[]
+                      e.currentTarget.checked === false &&
+                        (mainCheckbox[0].checked = false)
+                    }}
+                    className="w-full h-full"
+                    type="checkbox"
+                    value={validator.address}
+                    name="selectedAddress"
+                  />
+                </div>
               </div>
             ))}
           </div>
