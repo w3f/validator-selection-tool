@@ -17,69 +17,6 @@ import { AccountIcon } from "../Components/AccountIcon"
 import { Field, sections } from "./Picker"
 import Button from "../Components/Button"
 
-const jsxResults$ = results$.pipeState(
-  map((validators) =>
-    Array.isArray(validators) ? (
-      <div className="w-full whitespace-nowrap text-body-2 flex ">
-        <div className="w-full flex flex-col gap-2">
-          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default">
-            Address
-          </span>
-          {validators.slice(0, 15).map((validator) => (
-            <div
-              key={validator.address}
-              className="w-full flex items-center py-3 pr-8 border-b-[1px]"
-            >
-              <AccountIcon small address={validator.address} />
-            </div>
-          ))}
-        </div>
-        <div className="w-full flex flex-col gap-2 ">
-          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
-            Score
-          </span>
-          {validators.slice(0, 15).map((validator) => (
-            <div
-              key={validator.address}
-              className="w-full flex items-center py-3 border-b-[1px] pr-4"
-            >
-              {validator.score.toFixed(2)}
-            </div>
-          ))}
-        </div>
-        {Object.entries(sections).map(([key, title], index) => (
-          <div className="w-full flex flex-col gap-2">
-            <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
-              {title}
-            </span>
-            {validators.slice(0, 15).map((validator) => (
-              <div
-                key={validator.address}
-                className="w-full flex items-center py-3 border-b-[1px] pr-4"
-              >
-                <Field
-                  className={
-                    index === Object.values(sections).length - 1
-                      ? "text-right w-full"
-                      : ""
-                  }
-                  validator={validator}
-                  field={key as any}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    ) : validators === SUSPENSE ? (
-      validators
-    ) : (
-      <span className="text-body-2 text-gray-300">
-        Not enough precision to show results. Keep going!
-      </span>
-    ),
-  ),
-)
 const isInit$ = resultsState$.pipeState(
   map((x) => x === ResultsState.INIT),
   withDefault(true),
@@ -98,6 +35,80 @@ const isGoodEnough$ = resultsState$.pipeState(
 const isPerfect$ = resultsState$.pipeState(
   map((x) => x === ResultsState.PERFECT),
   withDefault(false),
+)
+
+const jsxResults$ = results$.pipeState(
+  map((validators) =>
+    Array.isArray(validators) ? (
+      <div className="whitespace-nowrap text-body-2 flex ">
+        <div className="w-full flex flex-col gap-2">
+          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default">
+            Account
+          </span>
+          {validators.slice(0, 15).map((validator) => (
+            <div
+              key={validator.address}
+              className="w-full flex items-center py-3 pr-8 border-b-[1px]"
+            >
+              <AccountIcon
+                small
+                showAddress={isPerfect$.getValue()}
+                address={validator.address}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="w-full flex flex-col gap-2 ">
+          <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4">
+            Score
+          </span>
+          {validators.slice(0, 15).map((validator) => (
+            <div
+              key={validator.address}
+              className="w-full flex items-center py-3 border-b-[1px] pr-4"
+            >
+              {validator.score.toFixed(2)}
+            </div>
+          ))}
+        </div>
+        {Object.entries(sections).map(([key, title], index) => (
+          <div className="w-full flex flex-col gap-2">
+            <span
+              className={`sticky top-0 text-caption text-gray-400 bg-bg-default ${
+                index === Object.values(sections).length - 1
+                  ? "text-right w-full"
+                  : "pr-4"
+              }`}
+            >
+              {title}
+            </span>
+            {validators.slice(0, 15).map((validator) => (
+              <div
+                key={validator.address}
+                className="w-full flex items-center py-3 border-b-[1px]"
+              >
+                <Field
+                  className={
+                    index === Object.values(sections).length - 1
+                      ? "text-right w-full"
+                      : "pr-4"
+                  }
+                  validator={validator}
+                  field={key as any}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    ) : validators === SUSPENSE ? (
+      validators
+    ) : (
+      <span className="text-body-2 text-gray-300">
+        Not enough precision to show results. Keep going!
+      </span>
+    ),
+  ),
 )
 
 const Reset: React.FC = () => {

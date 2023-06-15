@@ -5,10 +5,12 @@ export function AccountIcon({
   address,
   name,
   small,
+  showAddress,
 }: {
   address: string
   name?: string
   small?: boolean
+  showAddress?: boolean
 }) {
   const btnTitle = name || address
   return (
@@ -17,14 +19,16 @@ export function AccountIcon({
         small ? "flex-row gap-1" : "flex-col gap-2"
       } items-center`}
     >
-      <Identicon value={address} theme="polkadot" size={small ? 20 : 40} />
-      <div
-        className={`${
-          small ? "text-body-2 " : "text-body"
-        } font-semibold whitespace-nowrap`}
-      >
-        {stringShorten(btnTitle, 4)}
-      </div>
+      <Identicon value={address} theme="polkadot" size={small ? 21 : 40} />
+      {showAddress && (
+        <div
+          className={`${
+            small ? "text-body-2 " : "text-body"
+          } whitespace-nowrap`}
+        >
+          {stringShorten(btnTitle, 4)}
+        </div>
+      )}
     </div>
   )
 }
