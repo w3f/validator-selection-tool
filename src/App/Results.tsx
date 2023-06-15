@@ -1,9 +1,16 @@
-import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
+import {
+  onReset,
+  resultsState$,
+  ResultsState,
+  nSelected$,
+  results$,
+} from "@/state"
 import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
 import Table from "./Table"
+import { useState } from "react"
 
 const isInit$ = resultsState$.pipeState(
   map((x) => x === ResultsState.INIT),
@@ -39,6 +46,7 @@ export const Results: React.FC = () => {
   const isPerfect = useStateObservable(isPerfect$)
   const isInsufficient = useStateObservable(isInsufficient$)
 
+  const [tableLength, setTableLength] = useState(1)
   return (
     <div className="h-full w-full flex flex-col gap-10 pb-4 transition-all ">
       <div className="flex flex-col">
@@ -76,9 +84,15 @@ export const Results: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="h-full overflow-scroll">
+      <div className="h-full overflow-scroll pb-12">
         <Subscribe fallback={<Loading size={16} />}>
-          <Table items={16} />
+          <Table items={16 * tableLength} />
+          <button
+            className="text-body-2"
+            onClick={() => setTableLength(tableLength + 1)}
+          >
+            Load 16 more
+          </button>
         </Subscribe>
       </div>
     </div>

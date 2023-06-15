@@ -29,7 +29,7 @@ export default function Table({ items = 16 }) {
             ))}
           </div>
           <div className="w-full flex flex-col gap-2">
-            <span className="sticky top-0 text-caption text-gray-400 bg-bg-default border-b-[1px] pb-1 ">
+            <span className="sticky top-0 text-caption text-gray-400 bg-bg-default border-b-[1px] pb-1">
               Account
             </span>
             {validators.slice(0, items).map((validator) => (
