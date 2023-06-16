@@ -50,13 +50,15 @@ const Column: React.FC<{
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold   ${
+      className={`overflow-clip  w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold   ${
         right ? "items-start" : "items-end"
       } `}
     >
       <div
         className={`w-full flex flex-col py-6 gap-6 items-center ${
-          right ? "pr-6 bg-p-purple-100" : "pl-6 bg-p-pink-100"
+          right
+            ? "pr-6 bg-p-purple-100 rounded-tr-lg"
+            : "pl-6 bg-p-pink-100 rounded-tl-lg"
         }`}
       >
         <Button
