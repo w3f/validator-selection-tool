@@ -1,40 +1,11 @@
-import {
-  onReset,
-  resultsState$,
-  ResultsState,
-  nSelected$,
-  results$,
-} from "@/state"
-import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
-import { map } from "rxjs"
+import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
+import { Subscribe, useStateObservable } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
 import Table from "./Table"
-import { useState } from "react"
-
-const isInit$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.INIT),
-  withDefault(true),
-)
-
-const isInsufficient$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.INSUFICIENT),
-  withDefault(false),
-)
-
-const isGoodEnough$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.GOOD_ENOUGH),
-  withDefault(false),
-)
-
-const isPerfect$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.PERFECT),
-  withDefault(false),
-)
 
 const Reset: React.FC = () => {
-  const isInit = useStateObservable(isInit$)
-  return isInit ? null : (
+  return (
     <Button small secondary onClick={() => onReset()}>
       Reset
     </Button>
@@ -42,37 +13,37 @@ const Reset: React.FC = () => {
 }
 
 export const Results: React.FC = () => {
-  const isGoodEnough = useStateObservable(isGoodEnough$)
-  const isPerfect = useStateObservable(isPerfect$)
-  const isInsufficient = useStateObservable(isInsufficient$)
+  const resultsState = useStateObservable(resultsState$)
 
-  const [tableLength, setTableLength] = useState(1)
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        console.log(
-          Array.from(
-            document.querySelectorAll(
-              'input[name="selectedAddress"]:checked',
-            ) as unknown as HTMLInputElement[],
-          ).map((checkbox) => checkbox.value),
+
+        const selectedAddresses = Array.from(
+          document.querySelectorAll(
+            'input[name="selectedAddress"]:checked',
+          ) as unknown as HTMLInputElement[],
         )
+          .map((x) => x.value)
+          .join(", ")
+
+        navigator.clipboard.writeText(selectedAddresses)
       }}
       className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
     >
       <div className="flex flex-col">
         <div className="h-fit flex items-center justify-between">
           <span className="text-h5 font-unbounded">Results</span>
-          <Reset />
-          <button type="submit">Submit</button>
+          {resultsState > ResultsState.INSUFICIENT ? <Reset /> : null}
+          <button type="submit">Copy</button>
         </div>
         <div className="flex gap-1.5 items-center text-body-2">
           <span>Selected:</span>
           <span className="font-semibold w-6 text-start">{nSelected$}</span>
           <span>Precision:</span>
-          {isInsufficient && (
+          {resultsState === ResultsState.INSUFICIENT && (
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 rounded-full  bg-orange-400" />
               <span className="font-semibold font-inter text-orange-400">
@@ -80,7 +51,7 @@ export const Results: React.FC = () => {
               </span>
             </div>
           )}
-          {isGoodEnough && (
+          {resultsState === ResultsState.GOOD_ENOUGH && (
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 rounded-full  bg-green-500" />
               <span className="text-green-500 font-semibold font-inter">
@@ -88,7 +59,7 @@ export const Results: React.FC = () => {
               </span>
             </div>
           )}
-          {isPerfect && (
+          {resultsState === ResultsState.PERFECT && (
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 rounded-full  bg-green-600" />
               <span className="text-green-600 font-semibold font-inter">
@@ -100,13 +71,7 @@ export const Results: React.FC = () => {
       </div>
       <div className="h-full overflow-scroll pb-12">
         <Subscribe fallback={<Loading size={16} />}>
-          <Table items={16 * tableLength} />
-          <button
-            className="text-body-2"
-            onClick={() => setTableLength(tableLength + 1)}
-          >
-            Load 16 more
-          </button>
+          <Table />
         </Subscribe>
       </div>
     </form>
