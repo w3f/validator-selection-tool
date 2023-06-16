@@ -9,6 +9,7 @@ interface ButtonProps {
   id?: string
   type?: "button" | "submit" | "reset"
   disabled?: boolean
+  variant?: "primary" | "ghost" | "fullPink" | "fullPurple"
 }
 
 export default function Button({
@@ -22,6 +23,7 @@ export default function Button({
   type,
   disabled,
   fullPink,
+  variant,
 }: ButtonProps) {
   return (
     <button
@@ -29,22 +31,30 @@ export default function Button({
       type={type}
       id={id}
       onClick={onClick}
-      className={`rounded-full font-semibold text-body-2 
-      ${small ? "py-2 px-4" : "py-3 px-6"}
+      className={`rounded-full font-semibold  ${
+        small ? "py-2 px-4 text-caption" : "py-3 px-6 text-body-2 "
+      } ${fullWidth ? "w-full" : "w-fit"} ${
+        variant === "primary" &&
+        "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)]"
+      } 
       ${
-        secondary
-          ? "bg-secondary disabled:bg-gray-400 hover:bg-p-purple-900 text-white shadow-none"
-          : "bg-fill-secondary border-border-primary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)]"
+        variant === "ghost" &&
+        "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(225,225,225)] text-black hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(225,225,225)]"
       }
       ${
-        fullPink
-          ? "bg-primary text-white hover:brightness-95 hover:bg-primary"
-          : "bg-fill-secondary border-border-primary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)]"
+        variant === "fullPink" &&
+        "bg-primary shadow-none text-white hover:bg-[#D50071] hover:shadow-none"
       }
-      
-      ${fullWidth ? "w-full" : "w-fit"} ${className}`}
+      ${
+        variant === "fullPurple" &&
+        "bg-secondary shadow-none text-white hover:bg-[#28123E] hover:shadow-none"
+      }`}
     >
       {children}
     </button>
   )
+}
+
+Button.defaultProps = {
+  variant: "primary",
 }

@@ -14,7 +14,7 @@ import { useState } from "react"
 
 const Reset: React.FC = () => {
   return (
-    <Button small secondary onClick={() => onReset()}>
+    <Button variant="ghost" small secondary onClick={() => onReset()}>
       Reset
     </Button>
   )
@@ -24,6 +24,7 @@ function Copy() {
   const [clicked, setClicked] = useState(false)
   return (
     <Button
+      small
       id="copyBtn"
       type="submit"
       onClick={() => {
