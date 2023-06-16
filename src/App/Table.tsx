@@ -4,6 +4,7 @@ import { SUSPENSE, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { sections, Field } from "./Picker"
 import { useState } from "react"
+import { CheckIcon } from "@/Assets/Icons"
 
 const isPerfect$ = resultsState$.pipeState(
   map((x) => x === ResultsState.PERFECT),
@@ -21,24 +22,27 @@ export default function Table() {
             <div className="w-fit flex flex-col gap-2">
               <span className="sticky top-0 text-caption bg-bg-default border-b-[1px] pb-1 ">
                 <div className="w-5 h-5 p-[2px] mr-3">
-                  <input
-                    onChange={() => {
-                      const checkboxes = document.getElementsByName(
-                        "selectedAddress",
-                      ) as unknown as HTMLInputElement[]
+                  <label htmlFor="mainCheckbox relative">
+                    <input
+                      defaultChecked={true}
+                      onChange={() => {
+                        const checkboxes = document.getElementsByName(
+                          "selectedAddress",
+                        ) as unknown as HTMLInputElement[]
 
-                      const allChecked = [...checkboxes].every(
-                        (checkbox) => checkbox.checked,
-                      )
+                        const allChecked = [...checkboxes].every(
+                          (checkbox) => checkbox.checked,
+                        )
 
-                      checkboxes.forEach((checkbox) => {
-                        checkbox.checked = !allChecked
-                      })
-                    }}
-                    className="w-full h-full"
-                    type="checkbox"
-                    name="mainCheckbox"
-                  />
+                        checkboxes.forEach((checkbox) => {
+                          checkbox.checked = !allChecked
+                        })
+                      }}
+                      className="appearance-none text-primary w-full h-full rounded-sm focus:ring-0 border-gray-300"
+                      type="checkbox"
+                      name="mainCheckbox"
+                    />
+                  </label>
                 </div>
               </span>
               {validators.slice(0, items).map((validator) => (
@@ -48,14 +52,25 @@ export default function Table() {
                 >
                   <div className="w-5 h-5 p-[2px] mr-3">
                     <input
+                      defaultChecked={true}
+                      className=" text-primary w-full h-full rounded-sm focus:ring-0 border-gray-300"
                       onChange={(e) => {
                         const mainCheckbox = document.getElementsByName(
                           "mainCheckbox",
                         ) as unknown as HTMLInputElement[]
                         e.currentTarget.checked === false &&
                           (mainCheckbox[0].checked = false)
+
+                        const checkboxes = document.getElementsByName(
+                          "selectedAddress",
+                        ) as unknown as HTMLInputElement[]
+
+                        const allChecked = [...checkboxes].every(
+                          (checkbox) => checkbox.checked,
+                        )
+
+                        allChecked && (mainCheckbox[0].checked = true)
                       }}
-                      className="w-full h-full"
                       type="checkbox"
                       value={validator.address}
                       name="selectedAddress"
@@ -68,11 +83,12 @@ export default function Table() {
               <span className="sticky top-0 text-caption text-gray-400 bg-bg-default border-b-[1px] pb-1">
                 Account
               </span>
-              {validators.slice(0, items).map((validator) => (
+              {validators.slice(0, items).map((validator, index) => (
                 <div
                   key={validator.address}
-                  className="w-full flex items-center pb-4 pt-3 pr-8 border-b-[1px]"
+                  className="w-full flex items-center gap-2 pb-4 pt-3 pr-8 border-b-[1px]"
                 >
+                  <span className="w-4 ">{index + 1}</span>
                   <AccountIcon
                     small
                     showAddress={isPerfect}
