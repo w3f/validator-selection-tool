@@ -4,6 +4,7 @@ import { SUSPENSE, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map } from "rxjs"
 import { sections, Field } from "./Picker"
 import { useState } from "react"
+import { RightArrowIcon } from "@/Assets/Icons"
 
 const isPerfect$ = resultsState$.pipeState(
   map((x) => x === ResultsState.PERFECT),
@@ -138,10 +139,11 @@ export default function Table() {
             ))}
           </div>
           <button
-            className="text-body-2"
+            className="text-body-2 py-4 font-semibold flex gap-2 items-center hover:gap-3 transition-all duration-100"
             onClick={() => setItems((prev) => prev + 16)}
           >
-            Load 16 more
+            <span>Load 16 more</span>
+            <RightArrowIcon size="12" />
           </button>
         </>
       ) : validators === SUSPENSE ? (

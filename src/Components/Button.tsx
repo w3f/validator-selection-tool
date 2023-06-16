@@ -31,7 +31,7 @@ export default function Button({
       type={type}
       id={id}
       onClick={onClick}
-      className={`rounded-full font-semibold  ${
+      className={`rounded-full font-semibold ${
         small ? "py-2 px-4 text-caption" : "py-3 px-6 text-body-2 "
       } ${fullWidth ? "w-full" : "w-fit"} ${
         variant === "primary" &&

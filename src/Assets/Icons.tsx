@@ -101,3 +101,21 @@ export function CopyIcon({ size, className }: IconProps) {
     </svg>
   )
 }
+
+export function RightArrowIcon({ size, className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ? size : "16"}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3"
+      viewBox="0 0 28 28"
+    >
+      <path d="M25 14.009H2M15.8 4L26 14.009 15.8 24" data-nofill="true"></path>
+    </svg>
+  )
+}
