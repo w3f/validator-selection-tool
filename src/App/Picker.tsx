@@ -6,11 +6,11 @@ import { ValidatorData } from "@/api"
 import Tooltip from "@/Components/Tooltip"
 
 export const sections = {
-  votes: "Votes",
-  clusterSize: "Cluster Size",
+  selfStake: "Self Stake",
   commission: "Commission",
   avgEraPoints: "Avg. Era Points",
-  selfStake: "Self Stake",
+  clusterSize: "Cluster Size",
+  votes: "Votes",
 } as const
 
 export const tooltips = {
