@@ -46,9 +46,9 @@ export default function Table() {
               {validators.slice(0, items).map((validator) => (
                 <div
                   key={validator.address}
-                  className="flex items-center pt-3 pb-4  border-b-[1px]"
+                  className="flex items-center pt-[14px] pb-[18px]  border-b-[1px]"
                 >
-                  <div className="w-5 h-5 p-[2px] flex items-center justify-center mr-3">
+                  <div className="w-4 h-4 flex items-center justify-center mr-3">
                     <input
                       defaultChecked={true}
                       className=" text-primary w-full h-full rounded-sm focus:ring-0 border-gray-300"
