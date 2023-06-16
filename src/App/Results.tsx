@@ -1,8 +1,16 @@
-import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
+import {
+  onReset,
+  resultsState$,
+  ResultsState,
+  nSelected$,
+  results$,
+} from "@/state"
 import { Subscribe, useStateObservable } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
 import Table from "./Table"
+import { CheckIcon, CopyIcon } from "@/Assets/Icons"
+import { useState } from "react"
 
 const Reset: React.FC = () => {
   return (
@@ -12,11 +20,49 @@ const Reset: React.FC = () => {
   )
 }
 
+function Copy() {
+  const [clicked, setClicked] = useState(false)
+  return (
+    <Button
+      id="copyBtn"
+      type="submit"
+      onClick={() => {
+        setClicked(true)
+        setTimeout(() => {
+          setClicked(false)
+        }, 3000)
+      }}
+    >
+      <div className="flex gap-2">
+        {clicked ? <CheckIcon /> : <CopyIcon />}
+        <span>{clicked ? "Copied to clipboard" : "Copy to clipboard"}</span>
+      </div>
+    </Button>
+  )
+}
+
 export const Results: React.FC = () => {
   const resultsState = useStateObservable(resultsState$)
 
   return (
     <form
+      onChange={() => {
+        const checkboxes = Array.from(
+          document.querySelectorAll(
+            'input[type="checkbox"]',
+          ) as unknown as HTMLInputElement[],
+        )
+
+        const allUnChecked = [...checkboxes].every(
+          (checkbox) => !checkbox.checked,
+        )
+
+        const copyBtn = document.getElementById(
+          "copyBtn",
+        ) as unknown as HTMLButtonElement
+
+        copyBtn.disabled = allUnChecked
+      }}
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -36,8 +82,12 @@ export const Results: React.FC = () => {
       <div className="flex flex-col">
         <div className="h-fit flex items-center justify-between">
           <span className="text-h5 font-unbounded">Results</span>
-          {resultsState > ResultsState.INSUFICIENT ? <Reset /> : null}
-          <button type="submit">Copy</button>
+          {resultsState > ResultsState.INSUFICIENT && (
+            <div className="flex gap-4">
+              <Reset />
+              <Copy />
+            </div>
+          )}
         </div>
         <div className="flex gap-1.5 items-center text-body-2">
           <span>Selected:</span>

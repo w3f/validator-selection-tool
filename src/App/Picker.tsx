@@ -61,6 +61,7 @@ const Column: React.FC<{
       >
         <Button
           onClick={onSelect}
+          fullPink={!right}
           secondary={right}
           fullWidth
           className="font-unbounded text-body-1 text-white"

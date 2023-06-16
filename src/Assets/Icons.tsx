@@ -82,3 +82,22 @@ export function CheckIcon({ size, className }: IconProps) {
     </svg>
   )
 }
+
+export function CopyIcon({ size, className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ? size : "16"}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 28 28"
+    >
+      <path d="M8.994 8.5V2h17v17h-6.5"></path>
+      <path d="M18.994 9h-17v17h17V9z"></path>
+    </svg>
+  )
+}

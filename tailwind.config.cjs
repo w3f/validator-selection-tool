@@ -31,6 +31,8 @@ module.exports = {
         "p-purple": { 100: "#F3F5FB", 900: "#1C0533" },
         primary: "#E6007A",
         secondary: "#321D47",
+        fill: { secondary: "#FFF8FC", "secondary-hover": "#FFFCFC" },
+        border: { primary: "#E6007A" },
       },
       keyframes: {
         blur: {
