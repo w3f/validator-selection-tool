@@ -68,5 +68,5 @@ export async function ranking(
       score: getScore(validator),
       ...validator,
     }))
-    .sort((a, b) => a.score - b.score)
+    .sort((a, b) => b.score - a.score)
 }
