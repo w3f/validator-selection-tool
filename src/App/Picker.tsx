@@ -50,7 +50,7 @@ const Column: React.FC<{
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold  ${
+      className={`w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold   ${
         right ? "items-start" : "items-end"
       } `}
     >
@@ -117,7 +117,7 @@ const Center: React.FC<{}> = () => {
 export default function Picker() {
   return (
     <div
-      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg overflow-clip flex shadow-lg`}
+      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg flex shadow-lg`}
     >
       <Column kind="a" />
       <Center />

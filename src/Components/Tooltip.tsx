@@ -20,8 +20,8 @@ export default function Tooltip({ children }: TooltipProps) {
     >
       <InformationalIcon className="text-gray-500" />
       {show && (
-        <div className="absolute flex flex-col items-center drop-shadow-md left-[50%] bottom-6 translate-x-[-50%] text-body-2 text-gray-500">
-          <div className="w-64 p-3 bg-white rounded-sm whitespace-pre-wrap">
+        <div className="absolute flex flex-col items-center drop-shadow-md left-[50%] bottom-6 translate-x-[-50%] text-body-2 text-gray-700">
+          <div className="w-64 p-3 bg-white rounded-md whitespace-pre-wrap">
             {children}
           </div>
           <div className="border-solid border-t-white border-t-8 rounded-sm border-x-transparent border-x-8 border-b-0" />
