@@ -14,15 +14,12 @@ interface ButtonProps {
 
 export default function Button({
   children,
-  secondary,
   onClick,
   fullWidth,
-  className,
   small,
   id,
   type,
   disabled,
-  fullPink,
   variant,
 }: ButtonProps) {
   return (
@@ -31,23 +28,23 @@ export default function Button({
       type={type}
       id={id}
       onClick={onClick}
-      className={`rounded-full font-semibold ${
-        small ? "py-2 px-4 text-caption" : "py-3 px-6 text-body-2 "
+      className={`rounded-full font-semibold font-unbounded disabled:bg-fill-disabled disabled:shadow-none disabled:text-foreground-disabled disabled:pointer-events-none ${
+        small ? "py-2 px-4 text-xs" : "py-3 px-6 text-sm"
       } ${fullWidth ? "w-full" : "w-fit"} ${
         variant === "primary" &&
-        "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)]"
+        "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-foreground-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)] "
       } 
       ${
         variant === "ghost" &&
-        "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(225,225,225)] text-black hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(225,225,225)]"
+        "bg-fill-ghost shadow-[inset_0_0_0_2px_rgb(225,225,225)] text-foreground-contrast hover:bg-fill-ghost-hover hover:shadow-[inset_0_0_0_3px_rgb(225,225,225)]"
       }
       ${
         variant === "fullPink" &&
-        "bg-primary shadow-none text-white hover:bg-[#D50071] hover:shadow-none"
+        "bg-fill-primary shadow-none text-white hover:bg-fill-primary-hover hover:shadow-none"
       }
       ${
         variant === "fullPurple" &&
-        "bg-secondary shadow-none text-white hover:bg-[#28123E] hover:shadow-none"
+        "bg-pPurple-700 shadow-none text-white hover:bg-pPurple-800 hover:shadow-none"
       }`}
     >
       {children}

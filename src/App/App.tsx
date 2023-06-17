@@ -6,6 +6,10 @@ import Header from "./Header"
 import Hero from "./Hero"
 import { Results } from "./Results"
 
+import "polkadot-theme/global.css"
+import "polkadot-theme/light.css"
+import "polkadot-theme/dark.css"
+
 const isInit$ = resultsState$.pipeState(
   map((x) => x === ResultsState.INIT),
   withDefault(true),

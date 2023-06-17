@@ -18,13 +18,13 @@ export default function Tooltip({ children }: TooltipProps) {
         setShow(false)
       }}
     >
-      <InformationalIcon className="text-gray-500" />
+      <InformationalIcon className="text-foreground-dimmed" />
       {show && (
-        <div className=" z-50 absolute flex flex-col items-center drop-shadow-md left-[50%] bottom-6 translate-x-[-50%] text-body-2 text-gray-700">
-          <div className="w-64 p-3 bg-white rounded-md whitespace-pre-wrap">
+        <div className=" z-50 absolute flex flex-col items-center drop-shadow-md dark:drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] left-[50%] bottom-6 translate-x-[-50%] text-sm text-foreground-contrast">
+          <div className="w-64 p-3 bg-background-float rounded-md whitespace-pre-wrap">
             {children}
           </div>
-          <div className="border-solid border-t-white border-t-8 rounded-sm border-x-transparent border-x-8 border-b-0" />
+          <div className="border-solid border-t-background-float border-t-8 rounded-sm border-x-transparent border-x-8 border-b-0" />
         </div>
       )}
     </div>

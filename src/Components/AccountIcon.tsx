@@ -16,7 +16,7 @@ export function AccountIcon({
   return (
     <div
       className={`flex ${
-        small ? "flex-row gap-1" : "flex-col gap-2"
+        small ? "flex-row gap-2" : "flex-col gap-2"
       } items-center`}
     >
       <Identicon value={address} theme="polkadot" size={small ? 20 : 40} />

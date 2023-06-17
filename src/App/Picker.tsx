@@ -50,15 +50,15 @@ const Column: React.FC<{
 
   return (
     <div
-      className={`overflow-clip  w-full flex flex-col gap-4 pb-6 text-body-2 font-semibold   ${
+      className={`overflow-clip  w-full flex flex-col gap-4 pb-6 font-semibold   ${
         right ? "items-start" : "items-end"
       } `}
     >
       <div
         className={`w-full flex flex-col py-6 gap-6 items-center ${
           right
-            ? "pr-6 bg-p-purple-100 rounded-tr-lg"
-            : "pl-6 bg-p-pink-100 rounded-tl-lg"
+            ? "pr-6 bg-pPurple-100 dark:bg-pPurple-950 rounded-tr-lg"
+            : "pl-6 bg-pPink-100 dark:bg-pPink-950 rounded-tl-lg"
         }`}
       >
         <Button
@@ -67,7 +67,6 @@ const Column: React.FC<{
           variant={right ? "fullPurple" : "fullPink"}
           secondary={right}
           fullWidth
-          className="font-unbounded text-body-1 text-white"
         >
           {kind === "a" ? "A" : "B"}
         </Button>
@@ -81,7 +80,7 @@ const Column: React.FC<{
         >
           <Field validator={validator} field={key as any} />
           {index < arr.length - 1 ? (
-            <div className="w-full h-[1px] bg-gray-200" />
+            <div className="w-full h-[1px] bg-fill-separator" />
           ) : null}
         </div>
       ))}
@@ -90,13 +89,13 @@ const Column: React.FC<{
 }
 const Center: React.FC<{}> = () => {
   return (
-    <div className="flex flex-col items-center gap-4 pb-6 text-body-2">
-      <div className="flex w-full h-full items-center py-6 px-6 bg-gradient-to-r from-p-pink-100 to-p-purple-100">
-        <div className="w-full h-[2px] flex items-center gap-2 bg-secondary" />
-        <span className="py-3 px-6 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] text-body-2 font-unbounded">
+    <div className="flex flex-col items-center gap-4 pb-6">
+      <div className="flex w-full h-full items-center py-6 px-6 bg-gradient-to-r from-pPink-100 to-pPurple-100 dark:from-pPink-950 dark:to-pPurple-950">
+        <div className="w-full h-[2px] flex items-center gap-2 bg-border-contrast" />
+        <span className="py-3 px-6 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] dark:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.9)] font-unbounded">
           VS
         </span>
-        <div className="w-full h-[2px] flex items-center gap-2 bg-secondary" />
+        <div className="w-full h-[2px] flex items-center gap-2 bg-border-contrast" />
       </div>
       {Object.entries(sections).map(([key, title], index) => {
         const typedKey = key as keyof typeof sections
@@ -107,7 +106,7 @@ const Center: React.FC<{}> = () => {
               <Tooltip>{tooltips[typedKey]}</Tooltip>
             </div>
             {index < Object.entries(sections).length - 1 ? (
-              <div className="w-full h-[1px] bg-gray-200" />
+              <div className="w-full h-[1px] bg-fill-separator" />
             ) : null}
           </div>
         )
@@ -119,7 +118,7 @@ const Center: React.FC<{}> = () => {
 export default function Picker() {
   return (
     <div
-      className={`w-full h-fit bg-white border-white border-[1px] rounded-lg flex shadow-lg`}
+      className={`w-full h-fit bg-background-float text-sm text-foreground-contrast border-background-float border-[1px] rounded-lg flex shadow-lg`}
     >
       <Column kind="a" />
       <Center />

@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 :root {
-  background-color: #f5f5f5;
+  pale-pink: var(--colors-p-pink-100);
+}
+
+:root[data-theme="dark"] {
+  pale-pink: var(--colors-p-pink-800);
 }

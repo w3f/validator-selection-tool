@@ -1,9 +1,11 @@
 export default function Hero() {
   return (
-    <div className="w-full h-full mb-4">
+    <div className="w-full h-full mb-4 text-foreground-contrast">
       <div className="h-full flex flex-col items-start justify-center gap-4 pr-24 pl-6 mb-4">
-        <span className="text-h3 font-unbounded">Tailor Your Nominations</span>
-        <span className="text-body-2">
+        <span className="text-3xl font-unbounded font-medium">
+          Tailor Your Nominations
+        </span>
+        <span className="text-sm">
           This tool is engineered to streamline your nominations based on your
           preferences, using the most up-to-date validator data.
           <br />

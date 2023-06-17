@@ -18,9 +18,9 @@ export default function Table() {
     map((validators) =>
       Array.isArray(validators) ? (
         <>
-          <div className="w-full whitespace-nowrap text-body-2 leading-5 flex ">
-            <div className="w-fit flex flex-col gap-2">
-              <span className="sticky top-0 text-caption bg-bg-default border-b-[1px] pb-1 ">
+          <div className="w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex pl-[2px]">
+            <div className="w-fit flex flex-col">
+              <span className="sticky top-0 text-xs leading-5 border-b-[1px] border-fill-separator pb-2 bg-background-default">
                 <div className="w-5 h-5 mr-3">
                   <input
                     defaultChecked={true}
@@ -37,7 +37,7 @@ export default function Table() {
                         checkbox.checked = !allChecked
                       })
                     }}
-                    className="appearance-none text-primary rounded-sm focus:ring-0 border-gray-300"
+                    className="bg-background-dip  appearance-none text-foreground-primary rounded-sm focus:ring-0 border-border-hint"
                     type="checkbox"
                     name="mainCheckbox"
                   />
@@ -46,12 +46,12 @@ export default function Table() {
               {validators.slice(0, items).map((validator) => (
                 <div
                   key={validator.address}
-                  className="flex items-center pt-[14px] pb-[18px]  border-b-[1px]"
+                  className="flex items-center pt-[18px] pb-[22px] border-b-[1px] border-border-hint"
                 >
                   <div className="w-4 h-4 flex items-center justify-center mr-3">
                     <input
                       defaultChecked={true}
-                      className=" text-primary w-full h-full rounded-sm focus:ring-0 border-gray-300"
+                      className="appearance-none text-foreground-primary w-full h-full rounded-sm focus:ring-0 shadow-none bg-background-dip  border-border-hint"
                       onChange={(e) => {
                         const mainCheckbox = document.getElementsByName(
                           "mainCheckbox",
@@ -77,14 +77,14 @@ export default function Table() {
                 </div>
               ))}
             </div>
-            <div className="w-full flex flex-col gap-2">
-              <span className="sticky top-0 text-caption text-gray-400 bg-bg-default border-b-[1px] pb-1">
+            <div className="w-full flex flex-col">
+              <span className="sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2">
                 Account
               </span>
               {validators.slice(0, items).map((validator, index) => (
                 <div
                   key={validator.address}
-                  className="w-full flex items-center gap-2 pb-4 pt-3 pr-8 border-b-[1px]"
+                  className="w-full flex items-center gap-2 pb-5 pt-4 pr-8 border-b-[1px] border-fill-separator"
                 >
                   <span className="w-4 ">{index + 1}</span>
                   <AccountIcon
@@ -95,23 +95,23 @@ export default function Table() {
                 </div>
               ))}
             </div>
-            <div className="w-full flex flex-col gap-2 ">
-              <span className="sticky top-0 text-caption text-gray-400 bg-bg-default pr-4 border-b-[1px] pb-1 ">
+            <div className="w-full flex flex-col">
+              <span className="sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default pr-4 border-b-[1px] border-fill-separator pb-2 ">
                 Score
               </span>
               {validators.slice(0, items).map((validator) => (
                 <div
                   key={validator.address}
-                  className="w-full flex items-center pb-4 pt-3 border-b-[1px] pr-4"
+                  className="w-full flex items-center pb-5 pt-4 border-b-[1px] border-fill-separator pr-4"
                 >
                   {validator.score.toFixed(2)}
                 </div>
               ))}
             </div>
             {Object.entries(sections).map(([key, title], index) => (
-              <div className="w-full flex flex-col gap-2">
+              <div className="w-full flex flex-col">
                 <span
-                  className={`sticky top-0 text-caption text-gray-400 bg-bg-default border-b-[1px] pb-1  ${
+                  className={`sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2  ${
                     index === Object.values(sections).length - 1
                       ? "text-right w-full"
                       : "pr-4"
@@ -122,7 +122,7 @@ export default function Table() {
                 {validators.slice(0, items).map((validator) => (
                   <div
                     key={validator.address}
-                    className="w-full flex items-center pb-4 pt-3 border-b-[1px]"
+                    className="w-full flex items-center pb-5 pt-4 border-b-[1px] border-fill-separator"
                   >
                     <Field
                       className={
@@ -139,7 +139,7 @@ export default function Table() {
             ))}
           </div>
           <button
-            className="text-body-2 py-4 font-semibold flex gap-2 items-center hover:gap-3 transition-all duration-100"
+            className="text-sm text-foreground-contrast py-4 font-semibold flex gap-2 items-center hover:gap-3 transition-all duration-100"
             onClick={() => setItems((prev) => prev + 16)}
           >
             <span>Load 16 more</span>
@@ -149,7 +149,7 @@ export default function Table() {
       ) : validators === SUSPENSE ? (
         validators
       ) : (
-        <span className="text-body-2 text-gray-300">
+        <span className="text-sm text-foreground-dimmed">
           Not enough precision to show results. Keep going!
         </span>
       ),
