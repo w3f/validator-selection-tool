@@ -76,9 +76,9 @@ export const Results: React.FC = () => {
 
         navigator.clipboard.writeText(selectedAddresses)
       }}
-      className="h-full w-full flex flex-col gap-4 pb-12 z-50 md:pb-4 bg-background-default"
+      className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
     >
-      <div className=" sticky top-0 flex flex-col gap-2 pb-4 text-foreground-contrast bg-background-default ">
+      <div className="flex flex-col gap-2 text-foreground-contrast">
         <div className="h-fit flex items-center justify-between">
           <span className="text-xl leading-8 font-unbounded">Results</span>
           {resultsState > ResultsState.INSUFICIENT && (
@@ -112,12 +112,11 @@ export const Results: React.FC = () => {
           )}
         </div>
       </div>
-
-      <Subscribe fallback={<Loading size={16} />}>
-        <div className="h-fit md:h-full  md:overflow-scroll pr-4 bg-background-default ">
+      <div className="h-full overflow-scroll pr-4 pb-12">
+        <Subscribe fallback={<Loading size={16} />}>
           <Table />
-        </div>
-      </Subscribe>
+        </Subscribe>
+      </div>
     </form>
   )
 }

@@ -36,16 +36,16 @@ export const App = () => {
         @import
         url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Unbounded:wght@500&display=swap');
       </style>
-      <div className="h-screen overflow-clip flex flex-col px-4 md:px-8 lg:px-16">
+      <div className="h-screen overflow-clip flex flex-col pb-24 px-4 md:px-8 lg:px-16">
         <Header />
         {isToughCookie && !isPerfect ? (
           <div>WOW! You are a tough MF!</div>
         ) : null}
 
         <div
-          className={`${
-            isInit ? "h-fit" : "h-full"
-          } flex flex-col overflow-scroll md:overflow-clip md:flex-row gap-8 lg:gap-16   `}
+          className={`flex flex-col-reverse lg:flex-row gap-8 xl:gap-16 ${
+            isInit ? "items-start h-fit" : "items-start h-full"
+          } `}
         >
           {isDone ? null : <Picker />}
           {isInit ? <Hero /> : <Results />}

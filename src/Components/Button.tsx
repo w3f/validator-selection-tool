@@ -15,12 +15,12 @@ interface ButtonProps {
 export default function Button({
   children,
   onClick,
+  fullWidth,
   small,
   id,
   type,
   disabled,
   variant,
-  className,
 }: ButtonProps) {
   return (
     <button
@@ -30,7 +30,7 @@ export default function Button({
       onClick={onClick}
       className={`rounded-full font-semibold font-unbounded disabled:bg-fill-disabled disabled:shadow-none disabled:text-foreground-disabled disabled:pointer-events-none ${
         small ? "py-2 px-4 text-xs" : "py-3 px-6 text-sm"
-      } ${
+      } ${fullWidth ? "w-full" : "w-fit"} ${
         variant === "primary" &&
         "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-foreground-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)] "
       } 
@@ -45,7 +45,7 @@ export default function Button({
       ${
         variant === "fullPurple" &&
         "bg-pPurple-700 shadow-none text-white hover:bg-pPurple-800 hover:shadow-none"
-      } ${className}}`}
+      }`}
     >
       {children}
     </button>
