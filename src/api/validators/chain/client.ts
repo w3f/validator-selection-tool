@@ -4,7 +4,9 @@ import { WsProvider } from "@unstoppablejs/ws-provider"
 import { ScProvider } from "@unstoppablejs/sc-provider"
 import { storageClient } from "@unstoppablejs/substrate-bindings"
 
-const smProvider = ScProvider(WellKnownChain.polkadot)
+const smProvider = ScProvider(WellKnownChain.polkadot, {
+  forceEmbeddedNode: true,
+})
 export const client = createClient(smProvider)
 client.connect()
 
