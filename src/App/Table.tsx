@@ -149,7 +149,7 @@ export default function Table() {
       ) : validators === SUSPENSE ? (
         validators
       ) : (
-        <span className="text-sm text-foreground-dimmed">
+        <span className="text-sm text-foreground-disabled">
           Not enough precision to show results. Keep going!
         </span>
       ),

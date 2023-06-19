@@ -76,7 +76,7 @@ export const Results: React.FC = () => {
 
         navigator.clipboard.writeText(selectedAddresses)
       }}
-      className="w-full flex flex-col gap-4 pb-4 transition-all"
+      className="w-full flex flex-col gap-0 pb-4 transition-all"
     >
       <div className="sticky top-[-2px] flex flex-col gap-2 text-foreground-contrast bg-background-default pb-6">
         <div className="h-fit flex items-center justify-between ">
