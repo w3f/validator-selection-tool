@@ -78,7 +78,7 @@ export const Results: React.FC = () => {
       }}
       className="w-full flex flex-col gap-4 pb-4 transition-all"
     >
-      <div className="sticky top-[-2px] flex flex-col gap-2 px-4 md:px-0 text-foreground-contrast bg-background-default pb-6">
+      <div className="sticky top-[-2px] flex flex-col gap-2 text-foreground-contrast bg-background-default pb-6">
         <div className="h-fit flex items-center justify-between ">
           <span className="text-lg md:text-xl leading-8 font-unbounded">
             Results
@@ -115,10 +115,10 @@ export const Results: React.FC = () => {
         </div>
       </div>
       <Subscribe fallback={<Loading size={16} />}>
-        <div className="overflow-clip md:overflow-scroll md:pr-4 pb-12">
+        <div className="overflow-y-clip overflow-x-scroll md:overflow-scroll md:pr-4 pb-20">
           <Table />
           {resultsState > ResultsState.INSUFICIENT && (
-            <div className="absolute bottom-0 gap-4 h-fit py-5 pr-8 bg-background-default w-full justify-between flex md:hidden">
+            <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
               <Reset />
               <Copy />
             </div>
