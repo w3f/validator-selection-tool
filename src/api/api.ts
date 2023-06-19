@@ -1,4 +1,4 @@
-import { validators, x as xPointsRaw, questions } from "./data.json"
+import { validators, x as xPointsRaw, questions } from "./initialData.json"
 import type { Pair, ScoredValidator, ValidatorData } from "./types"
 import { linearInterpolation } from "./linearInterpolation"
 
@@ -12,13 +12,8 @@ function getValidatorDataFromIdx(idx: number): ValidatorData {
 
 const add = (a: number, b: number) => a + b
 
-const rawQualityToNumber = (rawQuality: string | number) => {
-  const asNumberQuality = Number(rawQuality)
-  return Math.max(0, Number.isNaN(asNumberQuality) ? 0 : asNumberQuality)
-}
-
 export function getPair(id: number): Pair {
-  const [questionIdxs, rawQuality] = questions[id] as [
+  const [questionIdxs, quality] = questions[id] as [
     [number, number] | string,
     number,
   ]
@@ -31,7 +26,7 @@ export function getPair(id: number): Pair {
           b: getValidatorDataFromIdx(questionIdxs[1]),
         }
       : null,
-    quality: Math.min(1, rawQualityToNumber(rawQuality) / 0.6),
+    quality: quality === -1 ? 0 : Math.max(0.0001, quality) / 0.75,
   }
 }
 
@@ -41,8 +36,7 @@ const validatorsPromise = import("./validators").then(async (x) =>
   x.getValidators(),
 )
 
-function getScoreFunctionForQuestionId(id: number) {
-  const yPoints = questions[id][2] as DataPoints
+function getScoreFunctionForQuestionId(yPoints: DataPoints) {
   const xPoints = xPointsRaw as DataPoints
 
   const pointsByField = yPoints.map((ys, idxField) =>
@@ -57,12 +51,21 @@ function getScoreFunctionForQuestionId(id: number) {
       .reduce(add)
 }
 
+const sortingDataPromise = import("./sortingData.json").then(
+  (mod) => mod.default,
+) as Promise<Array<DataPoints>>
+
 export async function ranking(
   questionId: number,
 ): Promise<Array<ScoredValidator>> {
-  const getScore = getScoreFunctionForQuestionId(questionId)
+  const [sortingData, validators] = await Promise.all([
+    sortingDataPromise,
+    validatorsPromise,
+  ])
 
-  return Object.entries(await validatorsPromise)
+  const getScore = getScoreFunctionForQuestionId(sortingData[questionId])
+
+  return Object.entries(validators)
     .map(([address, validator]) => ({
       address,
       score: getScore(validator),
