@@ -76,13 +76,15 @@ export const Results: React.FC = () => {
 
         navigator.clipboard.writeText(selectedAddresses)
       }}
-      className=" w-full flex flex-col gap-4 pb-4 transition-all "
+      className="w-full flex flex-col gap-4 pb-4 transition-all"
     >
-      <div className="sticky top-0 flex flex-col gap-2 text-foreground-contrast bg-background-default pb-6">
-        <div className="h-fit flex items-center justify-between">
-          <span className="text-xl leading-8 font-unbounded">Results</span>
+      <div className="sticky top-[-2px] flex flex-col gap-2 px-4 md:px-0 text-foreground-contrast bg-background-default pb-6">
+        <div className="h-fit flex items-center justify-between ">
+          <span className="text-lg md:text-xl leading-8 font-unbounded">
+            Results
+          </span>
           {resultsState > ResultsState.INSUFICIENT && (
-            <div className="flex gap-4">
+            <div className="gap-4 hidden md:flex">
               <Reset />
               <Copy />
             </div>
@@ -113,8 +115,14 @@ export const Results: React.FC = () => {
         </div>
       </div>
       <Subscribe fallback={<Loading size={16} />}>
-        <div className="md:overflow-scroll pr-4 pb-12">
+        <div className="overflow-clip md:overflow-scroll md:pr-4 pb-12">
           <Table />
+          {resultsState > ResultsState.INSUFICIENT && (
+            <div className="absolute bottom-0 gap-4 h-fit py-5 pr-8 bg-background-default w-full justify-between flex md:hidden">
+              <Reset />
+              <Copy />
+            </div>
+          )}
         </div>
       </Subscribe>
     </form>

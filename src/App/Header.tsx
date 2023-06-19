@@ -8,7 +8,9 @@ export default function Header() {
       <div className="flex gap-3 items-center">
         <PolkadotIcon />
         <div className="h-6 w-[2px] bg-fill-separator" />
-        <span className="text-xl font-unbounded">Validator Selector</span>
+        <span className="text-lg md:text-xl font-unbounded">
+          Validator Selector
+        </span>
       </div>
       <ThemeSwitch />
     </div>

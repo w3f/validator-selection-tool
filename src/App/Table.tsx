@@ -18,7 +18,7 @@ export default function Table() {
     map((validators) =>
       Array.isArray(validators) ? (
         <>
-          <div className=" w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex pl-[2px]">
+          <div className="pr-0 pl-4 w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex md:pl-[2px]">
             <div className=" w-fit flex flex-col">
               <span className="sticky top-20 md:top-0 text-xs leading-5 border-b-[1px] border-fill-separator pb-2 bg-background-default">
                 <div className="w-5 h-5 mr-3">
