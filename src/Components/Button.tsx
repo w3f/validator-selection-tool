@@ -4,19 +4,19 @@ interface ButtonProps {
   fullPink?: boolean
   onClick?: () => void
   fullWidth?: boolean
-  className?: string
   small?: boolean
   id?: string
   type?: "button" | "submit" | "reset"
   disabled?: boolean
   variant?: "primary" | "ghost" | "fullPink" | "fullPurple"
+  className?: string
 }
 
 export default function Button({
   children,
   onClick,
-  fullWidth,
   small,
+  className,
   id,
   type,
   disabled,
@@ -28,9 +28,9 @@ export default function Button({
       type={type}
       id={id}
       onClick={onClick}
-      className={`rounded-full font-semibold font-unbounded disabled:bg-fill-disabled disabled:shadow-none disabled:text-foreground-disabled disabled:pointer-events-none ${
+      className={`rounded-full font-semibold justify-center flex items-center whitespace-nowrap font-unbounded disabled:bg-fill-disabled disabled:shadow-none disabled:text-foreground-disabled disabled:pointer-events-none ${
         small ? "py-2 px-4 text-xs" : "py-3 px-6 text-sm"
-      } ${fullWidth ? "w-full" : "w-fit"} ${
+      }  ${
         variant === "primary" &&
         "bg-fill-secondary shadow-[inset_0_0_0_2px_rgb(230,0,122)] text-foreground-primary hover:bg-fill-secondary-hover hover:shadow-[inset_0_0_0_3px_rgb(230,0,122)] "
       } 
@@ -45,7 +45,7 @@ export default function Button({
       ${
         variant === "fullPurple" &&
         "bg-pPurple-700 shadow-none text-white hover:bg-pPurple-800 hover:shadow-none"
-      }`}
+      } ${className}}`}
     >
       {children}
     </button>
