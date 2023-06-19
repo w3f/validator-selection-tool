@@ -128,7 +128,7 @@ function Center() {
 export default function Picker() {
   return (
     <div
-      className={`w-full h-fit bg-background-float text-sm text-foreground-contrast border-background-float border-[1px] rounded-lg flex shadow-lg`}
+      className={`h-fit w-full whitespace-nowrap bg-background-float text-sm text-foreground-contrast border-background-float border-[1px] rounded-lg flex shadow-lg`}
     >
       <Column kind="a" />
       <Center />

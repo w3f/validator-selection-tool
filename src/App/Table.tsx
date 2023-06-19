@@ -18,9 +18,9 @@ export default function Table() {
     map((validators) =>
       Array.isArray(validators) ? (
         <>
-          <div className="w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex pl-[2px]">
+          <div className="h-full overflow-clip w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex pl-[2px]">
             <div className="w-fit flex flex-col">
-              <span className="sticky top-0 text-xs leading-5 border-b-[1px] border-fill-separator pb-2 bg-background-default">
+              <span className="sticky top-20 md:top-0 text-xs leading-5 border-b-[1px] border-fill-separator pb-2 bg-background-default">
                 <div className="w-5 h-5 mr-3">
                   <input
                     defaultChecked={true}
@@ -78,7 +78,7 @@ export default function Table() {
               ))}
             </div>
             <div className="w-full flex flex-col">
-              <span className="sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2">
+              <span className="sticky top-20 md:top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2">
                 Account
               </span>
               {validators.slice(0, items).map((validator, index) => (
@@ -96,7 +96,7 @@ export default function Table() {
               ))}
             </div>
             <div className="w-full flex flex-col">
-              <span className="sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default pr-4 border-b-[1px] border-fill-separator pb-2 ">
+              <span className="sticky top-20 md:top-0 text-xs leading-5 text-foreground-dimmed bg-background-default pr-4 border-b-[1px] border-fill-separator pb-2 ">
                 Score
               </span>
               {validators.slice(0, items).map((validator) => (
@@ -111,7 +111,7 @@ export default function Table() {
             {Object.entries(sections).map(([key, title], index) => (
               <div className="w-full flex flex-col">
                 <span
-                  className={`sticky top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2  ${
+                  className={`sticky top-20 md:top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2  ${
                     index === Object.values(sections).length - 1
                       ? "text-right w-full"
                       : "pr-4"
