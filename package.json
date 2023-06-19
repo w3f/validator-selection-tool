@@ -7,7 +7,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "analyze": "source-map-explorer 'dist/assets/*.js'",
+    "analyze": "source-map-explorer 'dist/assets/*.js' --no-border-checks",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "dev": "vite",
     "local": "VITE_ENV=local npm run dev",
