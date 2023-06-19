@@ -112,11 +112,11 @@ export const Results: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="h-full overflow-scroll pr-4 pb-12">
-        <Subscribe fallback={<Loading size={16} />}>
+      <Subscribe fallback={<Loading size={16} />}>
+        <div className="h-full overflow-scroll pr-4 pb-12">
           <Table />
-        </Subscribe>
-      </div>
+        </div>
+      </Subscribe>
     </form>
   )
 }
