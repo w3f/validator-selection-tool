@@ -1,16 +1,12 @@
-import {
-  onReset,
-  resultsState$,
-  ResultsState,
-  nSelected$,
-  results$,
-} from "@/state"
+import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
 import { Subscribe, useStateObservable } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
-import Table from "./Table"
 import { CheckIcon, CopyIcon } from "@/Assets/Icons"
-import { useState } from "react"
+import { lazy, useState } from "react"
+
+const tablePromise = import("./Table")
+const Table = lazy(() => tablePromise)
 
 const Reset: React.FC = () => {
   return (
