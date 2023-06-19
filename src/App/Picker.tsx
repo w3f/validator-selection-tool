@@ -33,7 +33,7 @@ export const Field: React.FC<{
   if (!validator) return <>&nbsp;</>
   const append =
     field === "selfStake" ? " DOT" : field === "commission" ? "%" : ""
-  return <div className={className}>{validator[field].toFixed(0) + append}</div>
+  return <div className={className}>{validator[field] + append}</div>
 }
 
 const getValidator$ = state(
@@ -50,75 +50,67 @@ const Column: React.FC<{
 
   return (
     <div
-      className={`overflow-clip  w-full flex flex-col-reverse md:flex-col gap-0 md:gap-4 pt-6 md:pt-0 md:pb-6 font-semibold   ${
+      className={`overflow-clip  w-full flex flex-col gap-4 pb-6 font-semibold   ${
         right ? "items-start" : "items-end"
       } `}
     >
       <div
-        className={`w-full flex flex-col py-3 md:py-6 gap-6 items-center ${
+        className={`w-full flex flex-col py-6 gap-6 items-center ${
           right
-            ? "pr-3 md:pr-6 bg-pPurple-100 dark:bg-pPurple-950 rounded-br-lg rounded-tr-none md:rounded-tr-lg md:rounded-br-none"
-            : "pl-3 md:pl-6 bg-pPink-100 dark:bg-pPink-950 rounded-bl-lg rounded-tl-none md:rounded-tl-lg md:rounded-bl-none"
+            ? "pr-6 bg-pPurple-100 dark:bg-pPurple-950 rounded-tr-lg"
+            : "pl-6 bg-pPink-100 dark:bg-pPink-950 rounded-tl-lg"
         }`}
       >
         <Button
-          className="w-full "
           onClick={onSelect}
           fullPink={!right}
           variant={right ? "fullPurple" : "fullPink"}
           secondary={right}
+          fullWidth
         >
           {kind === "a" ? "A" : "B"}
         </Button>
       </div>
-      <div className="w-full flex flex-col gap-6">
-        {Object.entries(sections).map(([key], index, arr) => (
-          <div
-            key={key}
-            className={`w-full body-2 flex flex-col gap-4 ${
-              right ? "pr-3 md:pr-6 items-start" : "pl-3 md:pl-6 items-end"
-            }`}
-          >
-            <Field validator={validator} field={key as any} />
-            {index < arr.length - 1 ? (
-              <div className="w-full h-[1px] bg-fill-separator" />
-            ) : (
-              <div className="pb-1.5 block md:hidden" />
-            )}
-          </div>
-        ))}
-      </div>
+      {Object.entries(sections).map(([key], index, arr) => (
+        <div
+          key={key}
+          className={`w-full body-2 flex flex-col gap-4 ${
+            right ? "pr-6 items-start" : "pl-6 items-end"
+          }`}
+        >
+          <Field validator={validator} field={key as any} />
+          {index < arr.length - 1 ? (
+            <div className="w-full h-[1px] bg-fill-separator" />
+          ) : null}
+        </div>
+      ))}
     </div>
   )
 }
 const Center: React.FC<{}> = () => {
   return (
-    <div className="flex flex-col-reverse md:flex-col items-center gap-0 md:gap-4 pt-6 md:pt-0 md:pb-6">
-      <div className="flex w-full items-center py-3 md:py-6 px-4 md:px-6 bg-gradient-to-r from-pPink-100 to-pPurple-100 dark:from-pPink-950 dark:to-pPurple-950">
+    <div className="flex flex-col items-center gap-4 pb-6">
+      <div className="flex w-full h-full items-center py-6 px-6 bg-gradient-to-r from-pPink-100 to-pPurple-100 dark:from-pPink-950 dark:to-pPurple-950">
         <div className="w-full h-[2px] flex items-center gap-2 bg-border-contrast" />
-        <span className="py-3 px-4 md:px-6 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] dark:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.9)] font-unbounded">
+        <span className="py-3 px-6 w-full rounded-full text-center shadow-[inset_0_0_0_2px_rgba(0,0,0,0.9)] dark:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.9)] font-unbounded">
           VS
         </span>
         <div className="w-full h-[2px] flex items-center gap-2 bg-border-contrast" />
       </div>
-      <div className="w-full flex flex-col gap-6">
-        {Object.entries(sections).map(([key, title], index) => {
-          const typedKey = key as keyof typeof sections
-          return (
-            <div key={key} className="w-full flex flex-col items-center gap-4">
-              <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-4 md:px-6">
-                {title}
-                <Tooltip>{tooltips[typedKey]}</Tooltip>
-              </div>
-              {index < Object.entries(sections).length - 1 ? (
-                <div className="w-full h-[1px] bg-fill-separator" />
-              ) : (
-                <div className="pb-1.5 block md:hidden" />
-              )}
+      {Object.entries(sections).map(([key, title], index) => {
+        const typedKey = key as keyof typeof sections
+        return (
+          <div key={key} className="w-full flex flex-col items-center gap-4">
+            <div className="flex justify-between w-full items-center gap-2 whitespace-nowrap px-6">
+              {title}
+              <Tooltip>{tooltips[typedKey]}</Tooltip>
             </div>
-          )
-        })}
-      </div>
+            {index < Object.entries(sections).length - 1 ? (
+              <div className="w-full h-[1px] bg-fill-separator" />
+            ) : null}
+          </div>
+        )
+      })}
     </div>
   )
 }
