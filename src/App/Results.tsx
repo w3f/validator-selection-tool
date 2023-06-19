@@ -1,120 +1,126 @@
-import { results$, onReset, resultsState$, ResultsState } from "@/state"
 import {
-  Subscribe,
-  SUSPENSE,
-  useStateObservable,
-  withDefault,
-} from "@react-rxjs/core"
-import { map } from "rxjs"
+  onReset,
+  resultsState$,
+  ResultsState,
+  nSelected$,
+  results$,
+} from "@/state"
+import { Subscribe, useStateObservable } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
-import { AccountIcon } from "../Components/AccountIcon"
-import { Field, sections } from "./Picker"
 import Button from "../Components/Button"
-
-const jsxResults$ = results$.pipeState(
-  map((validators) =>
-    Array.isArray(validators) ? (
-      <div className="flex flex-col gap-2 mt-4 text-body-2">
-        {validators.slice(0, 15).map((validator) => (
-          <div
-            key={validator.address}
-            className="flex items-center py-3 border-b-[1px]"
-          >
-            <AccountIcon small address={validator.address} />
-            {Object.entries(sections).map(([key]) => (
-              <div
-                key={key}
-                className="w-full body-2 flex flex-col gap-4 whitespace-nowrap h-fit items-center"
-              >
-                <Field validator={validator} field={key as any} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    ) : validators === SUSPENSE ? (
-      validators
-    ) : (
-      <span className="text-body-2 text-gray-300">
-        Not enough confidence to show results. Keep going!
-      </span>
-    ),
-  ),
-)
-const isInit$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.INIT),
-  withDefault(true),
-)
-
-const isInsufficient$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.INSUFICIENT),
-  withDefault(false),
-)
-
-const isGoodEnough$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.GOOD_ENOUGH),
-  withDefault(false),
-)
-
-const isPerfect$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.PERFECT),
-  withDefault(false),
-)
+import Table from "./Table"
+import { CheckIcon, CopyIcon } from "@/Assets/Icons"
+import { useState } from "react"
 
 const Reset: React.FC = () => {
-  const isInit = useStateObservable(isInit$)
-  return isInit ? null : (
-    <Button secondary onClick={() => onReset()}>
+  return (
+    <Button variant="ghost" small secondary onClick={() => onReset()}>
       Reset
     </Button>
   )
 }
 
+function Copy() {
+  const [clicked, setClicked] = useState(false)
+  return (
+    <Button
+      small
+      id="copyBtn"
+      type="submit"
+      onClick={() => {
+        setClicked(true)
+        setTimeout(() => {
+          setClicked(false)
+        }, 3000)
+      }}
+    >
+      <div className="flex gap-2 ">
+        {clicked ? <CheckIcon /> : <CopyIcon />}
+        <span className="">
+          {clicked ? "Copied to clipboard" : "Copy to clipboard"}
+        </span>
+      </div>
+    </Button>
+  )
+}
+
 export const Results: React.FC = () => {
-  const isGoodEnough = useStateObservable(isGoodEnough$)
-  const isPerfect = useStateObservable(isPerfect$)
-  const isInsufficient = useStateObservable(isInsufficient$)
+  const resultsState = useStateObservable(resultsState$)
 
   return (
-    <div className="h-full w-full flex flex-col gap-3 pb-4 transition-all ">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="h-fit flex items-center justify-between">
-            <span className="text-h5 font-unbounded">Results</span>
-            <Reset />
-          </div>
+    <form
+      onChange={() => {
+        const checkboxes = Array.from(
+          document.querySelectorAll(
+            'input[type="checkbox"]',
+          ) as unknown as HTMLInputElement[],
+        )
+
+        const allUnChecked = [...checkboxes].every(
+          (checkbox) => !checkbox.checked,
+        )
+
+        const copyBtn = document.getElementById(
+          "copyBtn",
+        ) as unknown as HTMLButtonElement
+
+        copyBtn.disabled = allUnChecked
+      }}
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const selectedAddresses = Array.from(
+          document.querySelectorAll(
+            'input[name="selectedAddress"]:checked',
+          ) as unknown as HTMLInputElement[],
+        )
+          .map((x) => x.value)
+          .join(", ")
+
+        navigator.clipboard.writeText(selectedAddresses)
+      }}
+      className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
+    >
+      <div className="flex flex-col gap-2 text-foreground-contrast">
+        <div className="h-fit flex items-center justify-between">
+          <span className="text-xl leading-8 font-unbounded">Results</span>
+          {resultsState > ResultsState.INSUFICIENT && (
+            <div className="flex gap-4">
+              <Reset />
+              <Copy />
+            </div>
+          )}
         </div>
-        <div className="flex gap-2 items-center text-body-2">
-          <span className="font-inter">Confidence:</span>
-          {isInsufficient && (
+        <div className="flex gap-1.5 items-center text-sm">
+          <span>Selected:</span>
+          <span className="font-semibold w-6 text-start">{nSelected$}</span>
+          <span>Precision:</span>
+          {resultsState === ResultsState.INSUFICIENT && (
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full  bg-orange-400" />
-              <span className="font-semibold font-inter text-orange-400">
-                Low
-              </span>
+              <div className="w-3 h-3 rounded-full  bg-orange-400" />
+              <span className="font-semibold text-orange-400">Low</span>
             </div>
           )}
-          {isGoodEnough && (
+          {resultsState === ResultsState.GOOD_ENOUGH && (
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full  bg-green-500" />
-              <span className="text-green-500 font-semibold font-inter">
-                Good enough
-              </span>
+              <div className="w-3 h-3 rounded-full  bg-green-500" />
+              <span className="text-green-500 font-semibold">Good enough</span>
             </div>
           )}
-          {isPerfect && (
+          {resultsState === ResultsState.PERFECT && (
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full  bg-green-600" />
-              <span className="text-green-600 font-semibold font-inter">
-                Perfect
-              </span>
+              <div className="w-3 h-3 rounded-full  bg-green-600" />
+              <span className="text-green-600 font-semibold">Perfect</span>
             </div>
           )}
         </div>
       </div>
-      <div className="h-full overflow-scroll">
-        <Subscribe fallback={<Loading size={16} />}>{jsxResults$}</Subscribe>
+      <div className="h-full overflow-scroll pr-4 pb-12">
+        <Subscribe fallback={<Loading size={16} />}>
+          <Table />
+        </Subscribe>
       </div>
-    </div>
+    </form>
   )
 }
