@@ -37,7 +37,7 @@ export const App = () => {
         <div
           className={`${
             isInit ? "h-fit md:overflow-visible" : "h-full md:overflow-clip"
-          } flex flex-col overflow-visible md:flex-row gap-8 lg:gap-16`}
+          } flex flex-col overflow-scroll md:flex-row gap-8 lg:gap-16`}
         >
           {isPerfect ? null : isToughCookie && !isPerfect ? (
             <ToughCookie />
