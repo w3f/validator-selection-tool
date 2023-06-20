@@ -118,7 +118,7 @@ export const Results: React.FC = () => {
         <div className="overflow-y-clip overflow-x-scroll md:overflow-scroll md:pr-4 pb-20">
           <Table />
           {resultsState > ResultsState.INSUFICIENT && (
-            <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
+            <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_-2px_6px_rgba(0,0,0,0.4)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
               <Reset />
               <Copy />
             </div>
