@@ -32,10 +32,6 @@ export function getPair(id: number): Pair {
 
 export const maxQuestionsIdx = questions.length - 1
 
-const validatorsPromise = import("./validators").then(async (x) =>
-  x.getValidators(),
-)
-
 function getScoreFunctionForQuestionId(yPoints: DataPoints) {
   const xPoints = xPointsRaw as DataPoints
 
@@ -55,12 +51,14 @@ const sortingDataPromise = import("./sortingData.json").then(
   (mod) => mod.default,
 ) as Promise<Array<DataPoints>>
 
+const validatorsP = import("./validators").then((x) => x.validators)
+
 export async function ranking(
   questionId: number,
 ): Promise<Array<ScoredValidator>> {
   const [sortingData, validators] = await Promise.all([
     sortingDataPromise,
-    validatorsPromise,
+    validatorsP,
   ])
 
   const getScore = getScoreFunctionForQuestionId(sortingData[questionId])

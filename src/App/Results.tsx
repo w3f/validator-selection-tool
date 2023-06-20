@@ -5,8 +5,7 @@ import Button from "../Components/Button"
 import { CheckIcon, CopyIcon } from "@/Assets/Icons"
 import { lazy, useState } from "react"
 
-const tablePromise = import("./Table")
-const Table = lazy(() => tablePromise)
+const Table = lazy(() => import("./Table"))
 
 const Reset: React.FC = () => {
   return (
