@@ -1,5 +1,4 @@
 import * as React from "react"
-import Button from "./Button"
 
 interface IconProps {
   height?: number

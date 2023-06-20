@@ -76,13 +76,15 @@ export const Results: React.FC = () => {
 
         navigator.clipboard.writeText(selectedAddresses)
       }}
-      className="h-full w-full flex flex-col gap-10 pb-4 transition-all "
+      className="w-full flex flex-col gap-0 pb-4 transition-all"
     >
-      <div className="flex flex-col gap-2 text-foreground-contrast">
-        <div className="h-fit flex items-center justify-between">
-          <span className="text-xl leading-8 font-unbounded">Results</span>
+      <div className="sticky top-[-2px] flex flex-col gap-2 text-foreground-contrast bg-background-default pb-6">
+        <div className="h-fit flex items-center justify-between ">
+          <span className="text-lg md:text-xl leading-8 font-unbounded">
+            Results
+          </span>
           {resultsState > ResultsState.INSUFICIENT && (
-            <div className="flex gap-4">
+            <div className="gap-4 hidden md:flex">
               <Reset />
               <Copy />
             </div>
@@ -112,11 +114,17 @@ export const Results: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="h-full overflow-scroll pr-4 pb-12">
-        <Subscribe fallback={<Loading size={16} />}>
+      <Subscribe fallback={<Loading size={16} />}>
+        <div className="overflow-y-clip overflow-x-scroll md:overflow-scroll md:pr-4 pb-20">
           <Table />
-        </Subscribe>
-      </div>
+          {resultsState > ResultsState.INSUFICIENT && (
+            <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_-2px_6px_rgba(0,0,0,0.4)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
+              <Reset />
+              <Copy />
+            </div>
+          )}
+        </div>
+      </Subscribe>
     </form>
   )
 }
