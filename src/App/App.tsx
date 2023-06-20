@@ -32,12 +32,12 @@ export const App = () => {
         @import
         url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Unbounded:wght@500&display=swap');
       </style>
-      <div className="h-screen overflow-clip flex flex-col px-4 md:px-8 lg:px-16">
+      <div className="h-screen flex flex-col px-4 md:px-8 lg:px-16">
         <Header />
         <div
           className={`${
             isInit ? "h-fit md:overflow-visible" : "h-full md:overflow-clip"
-          } flex flex-col overflow-scroll md:flex-row gap-8 lg:gap-16`}
+          } flex flex-col overflow-visible md:flex-row gap-8 lg:gap-16`}
         >
           {isPerfect ? null : isToughCookie && !isPerfect ? (
             <ToughCookie />
