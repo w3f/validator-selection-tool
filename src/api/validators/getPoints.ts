@@ -1,30 +1,53 @@
 import { getStakingCurrentEra, getStakingErasRewardsPoints } from "./chain"
 
-const N_ERAS = 40
+const N_ERAS = 83
+
 export const getEraPoints = async (validators: string[]) => {
   const currentEra = await getStakingCurrentEra()
 
   const previousEras = Array(N_ERAS)
     .fill(null)
     .map((_, idx) => currentEra! - idx - 1)
-    .reverse()
 
-  const result = await Promise.all(
+  const allEraPoints = await Promise.all(
     previousEras.map(getStakingErasRewardsPoints),
   )
 
-  const pointsPerValidator = new Map<string, { points: number }>(
-    validators.map((v) => [v, { points: 0 }]),
-  )
+  let totalScorers = 0
+  const allEraPointsWithAvg = allEraPoints
+    .map((eraPoints) => {
+      const nScorersInEra = eraPoints!.individual.length
+      totalScorers += nScorersInEra
 
-  result.forEach((era) => {
-    era?.individual.forEach(({ account, points }) => {
-      if (!pointsPerValidator.has(account)) return
-      pointsPerValidator.get(account)!.points += points
+      const avgPoints =
+        eraPoints!.individual.reduce((a, b) => a + b.points, 0) / nScorersInEra
+
+      const pointsPerValidator = new Map(
+        eraPoints!.individual.map((x) => [x.account, x.points] as const),
+      )
+
+      return {
+        avgPoints,
+        nScorersInEra,
+        pointsPerValidator,
+      }
     })
-  })
+    .map(({ avgPoints, nScorersInEra, pointsPerValidator }) => ({
+      avgMultiplier: nScorersInEra / totalScorers,
+      avgPoints,
+      pointsPerValidator,
+    }))
 
-  return validators.map((x) =>
-    Math.round(pointsPerValidator.get(x)!.points / N_ERAS),
-  )
+  return validators.map((validator) => {
+    return Math.round(
+      allEraPointsWithAvg
+        .map((era) => {
+          const points = era.pointsPerValidator.has(validator)
+            ? era.pointsPerValidator.get(validator)!
+            : era.avgPoints
+          return points * era.avgMultiplier
+        })
+        .reduce((a, b) => a + b, 0),
+    )
+  })
 }
