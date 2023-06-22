@@ -1,30 +1,47 @@
+import { map, withLatestFrom } from "rxjs"
 import { useStateObservable, withDefault } from "@react-rxjs/core"
 import { ResultsState, resultsState$, isToughCookie$ } from "@/state"
-import Picker from "./Picker"
-import { map } from "rxjs"
-import Header from "./Header"
-import Hero from "./Hero"
-import { Results } from "./Results"
+import { Header } from "./Header"
+import { Hero } from "./Hero"
+import { Picker } from "./Picker"
+import { ToughCookie } from "./ToughCookie"
 
 import "polkadot-theme/global.css"
 import "polkadot-theme/light.css"
 import "polkadot-theme/dark.css"
-import ToughCookie from "./ToughCookie"
+import { lazy, Suspense } from "react"
+
+const Results = lazy(() => import("./Results"))
 
 const isInit$ = resultsState$.pipeState(
   map((x) => x === ResultsState.INIT),
   withDefault(true),
 )
 
-const isPerfect$ = resultsState$.pipeState(
-  map((x) => x === ResultsState.PERFECT),
-  withDefault(false),
+const toughCookieJsx = <ToughCookie />
+const pickerJsx = <Picker />
+const main$ = resultsState$.pipeState(
+  withLatestFrom(isToughCookie$),
+  map(([resultState, isToughCookie]) =>
+    resultState === ResultsState.PERFECT ||
+    (isToughCookie && resultState < ResultsState.GOOD_ENOUGH)
+      ? null
+      : isToughCookie
+      ? toughCookieJsx
+      : pickerJsx,
+  ),
+  withDefault(pickerJsx),
+)
+
+const suspended = (
+  <div className="h-fit md:overflow-visible flex flex-col overflow-scroll md:flex-row gap-8 lg:gap-16">
+    {main$}
+    <Hero />
+  </div>
 )
 
 export const App = () => {
   const isInit = useStateObservable(isInit$)
-  const isToughCookie = useStateObservable(isToughCookie$)
-  const isPerfect = useStateObservable(isPerfect$)
 
   return (
     <>
@@ -34,18 +51,16 @@ export const App = () => {
       </style>
       <div className="h-screen flex flex-col px-4 md:px-8 lg:px-16">
         <Header />
-        <div
-          className={`${
-            isInit ? "h-fit md:overflow-visible" : "h-full md:overflow-clip"
-          } flex flex-col overflow-scroll md:flex-row gap-8 lg:gap-16`}
-        >
-          {isPerfect ? null : isToughCookie && !isPerfect ? (
-            <ToughCookie />
-          ) : (
-            <Picker />
-          )}
-          {isInit ? <Hero /> : <Results />}
-        </div>
+        <Suspense fallback={suspended}>
+          <div
+            className={`${
+              isInit ? "h-fit md:overflow-visible" : "h-full md:overflow-clip"
+            } flex flex-col overflow-scroll md:flex-row gap-8 lg:gap-16`}
+          >
+            {main$}
+            {isInit ? <Hero /> : <Results />}
+          </div>
+        </Suspense>
       </div>
     </>
   )

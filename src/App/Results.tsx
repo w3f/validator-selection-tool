@@ -3,9 +3,8 @@ import { Subscribe, useStateObservable } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
 import { CheckIcon, CopyIcon } from "@/Assets/Icons"
-import { lazy, useState } from "react"
-
-const Table = lazy(() => import("./Table"))
+import { useState } from "react"
+import Table from "./Table"
 
 const Reset: React.FC = () => {
   return (
@@ -39,7 +38,7 @@ function Copy() {
   )
 }
 
-export const Results: React.FC = () => {
+export default function Results() {
   const resultsState = useStateObservable(resultsState$)
 
   return (
@@ -82,12 +81,10 @@ export const Results: React.FC = () => {
           <span className="text-lg md:text-xl leading-8 font-unbounded">
             Results
           </span>
-          {resultsState > ResultsState.INSUFICIENT && (
-            <div className="gap-4 hidden md:flex">
-              <Reset />
-              <Copy />
-            </div>
-          )}
+          <div className="gap-4 hidden md:flex">
+            <Reset />
+            {resultsState > ResultsState.INSUFICIENT && <Copy />}
+          </div>
         </div>
         <div className="flex gap-1.5 items-center text-sm">
           <span>Selected:</span>

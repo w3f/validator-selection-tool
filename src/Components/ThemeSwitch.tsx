@@ -79,9 +79,9 @@ export default function ThemeSwitch() {
   return (
     <div onClick={toggleOn}>
       {currentTheme === "dark" ? (
-        <IconDark height={20} />
-      ) : (
         <IconLight height={20} />
+      ) : (
+        <IconDark height={20} />
       )}
     </div>
   )

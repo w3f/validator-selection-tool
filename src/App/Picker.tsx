@@ -125,7 +125,7 @@ function Center() {
   )
 }
 
-export default function Picker() {
+export function Picker() {
   return (
     <div
       className={`whitespace-nowrap w-full h-fit bg-background-float text-sm text-foreground-contrast border-background-float border-[1px] rounded-lg flex shadow-lg`}

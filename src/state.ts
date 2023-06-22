@@ -39,11 +39,6 @@ const currentQuestionId$ = state(
 
 export const pair$ = currentQuestionId$.pipeState(map(getPair), withReset)
 
-export const isToughCookie$ = pair$.pipeState(
-  map((x) => x.pair === null),
-  withDefault(false),
-)
-
 export const nSelected$ = pair$.pipeState(
   map((_, idx) => idx + 1),
   withReset,
@@ -74,6 +69,11 @@ export const resultsState$: StateObservable<ResultsState> =
     withReset,
   )
 resultsState$.subscribe()
+
+export const isToughCookie$ = pair$.pipeState(
+  map(({ pair }) => pair === null),
+  withDefault(false),
+)
 
 export const results$ = state(
   resultsState$.pipe(
