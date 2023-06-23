@@ -23,8 +23,7 @@ const pickerJsx = <Picker />
 const main$ = resultsState$.pipeState(
   withLatestFrom(isToughCookie$),
   map(([resultState, isToughCookie]) =>
-    resultState === ResultsState.PERFECT ||
-    (isToughCookie && resultState < ResultsState.GOOD_ENOUGH)
+    resultState === ResultsState.PERFECT
       ? null
       : isToughCookie
       ? toughCookieJsx

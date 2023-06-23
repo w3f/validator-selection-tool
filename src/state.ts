@@ -12,6 +12,7 @@ import {
   Observable,
   switchMap,
   scan,
+  combineLatest,
 } from "rxjs"
 import { maxQuestionsIdx, getPair, ranking } from "./api"
 
@@ -76,10 +77,10 @@ export const isToughCookie$ = pair$.pipeState(
 )
 
 export const results$ = state(
-  resultsState$.pipe(
+  combineLatest([resultsState$, isToughCookie$]).pipe(
     withLatestFrom(currentQuestionId$),
-    switchMap(([rState, currentQuestionId]) =>
-      rState > ResultsState.INSUFICIENT
+    switchMap(([[rState, isToughCookie], currentQuestionId]) =>
+      rState > ResultsState.INSUFICIENT || isToughCookie
         ? concat(of(SUSPENSE), ranking(currentQuestionId))
         : of(null),
     ),

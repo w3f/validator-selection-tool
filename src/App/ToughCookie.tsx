@@ -21,13 +21,15 @@ export function ToughCookie() {
         </span>
         {isGoodEnough ? (
           <span>
-            You'll have to settle with good enough results or hit reset and
+            You'll have to settle with "good enough" results or hit reset and
             start over!
           </span>
         ) : (
           <span>
             We were unable determine your preferences based on your choices so
-            far. Please start over.
+            far. However, based on the data that you have provided, we think
+            that these are the validators that better align with your
+            preferences. Please have a look at them or start over.
           </span>
         )}
       </div>
