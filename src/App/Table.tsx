@@ -14,7 +14,7 @@ const isPerfect$ = resultsState$.pipeState(
 const [toggleValidator$, onToggleValidtor] = createSignal<string>()
 
 const MAX_SELECTED_VALIDATORS = 16
-const selectedValidators$ = results$.pipeState(
+export const selectedValidators$ = results$.pipeState(
   map(
     (results) =>
       new Set(
@@ -57,7 +57,7 @@ const nValidatorsToDisplay$ = resultsState$.pipeState(
 )
 nValidatorsToDisplay$.subscribe()
 
-export default function Table() {
+export function Table() {
   const isPerfect = useStateObservable(isPerfect$)
   const nValidatorsToDisplay = useStateObservable(nValidatorsToDisplay$)
   const selectedValidators = useStateObservable(selectedValidators$)

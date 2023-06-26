@@ -1,10 +1,11 @@
 import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
-import { Subscribe, useStateObservable } from "@react-rxjs/core"
+import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
 import { Loading } from "../Components/Loading"
 import Button from "../Components/Button"
 import { CheckIcon, CopyIcon } from "@/Assets/Icons"
 import { useState } from "react"
-import Table from "./Table"
+import { Table, selectedValidators$ } from "./Table"
+import { map, take } from "rxjs"
 
 const Reset: React.FC = () => {
   return (
@@ -14,14 +15,26 @@ const Reset: React.FC = () => {
   )
 }
 
+const disabled$ = selectedValidators$.pipeState(
+  map((v) => v.size === 0),
+  withDefault(true),
+)
+
 function Copy() {
+  const isDisabled = useStateObservable(disabled$)
   const [clicked, setClicked] = useState(false)
   return (
     <Button
       small
       id="copyBtn"
       type="submit"
+      disabled={isDisabled}
       onClick={() => {
+        selectedValidators$.pipe(take(1)).subscribe((selected) => {
+          const selectedAddresses = [...selected].join()
+          navigator.clipboard.writeText(selectedAddresses)
+        })
+
         setClicked(true)
         setTimeout(() => {
           setClicked(false)
@@ -43,36 +56,9 @@ export default function Results() {
 
   return (
     <form
-      onChange={() => {
-        const checkboxes = Array.from(
-          document.querySelectorAll(
-            'input[type="checkbox"]',
-          ) as unknown as HTMLInputElement[],
-        )
-
-        const allUnChecked = [...checkboxes].every(
-          (checkbox) => !checkbox.checked,
-        )
-
-        const copyBtn = document.getElementById(
-          "copyBtn",
-        ) as unknown as HTMLButtonElement
-
-        copyBtn.disabled = allUnChecked
-      }}
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
-
-        const selectedAddresses = Array.from(
-          document.querySelectorAll(
-            'input[name="selectedAddress"]:checked',
-          ) as unknown as HTMLInputElement[],
-        )
-          .map((x) => x.value)
-          .join(", ")
-
-        navigator.clipboard.writeText(selectedAddresses)
       }}
       className="w-full flex flex-col gap-0 pb-4 transition-all"
     >
