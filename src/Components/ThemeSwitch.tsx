@@ -76,7 +76,7 @@ export default function ThemeSwitch() {
   }
 
   return (
-    <div onClick={toggleOn}>
+    <div className="cursor-pointer" onClick={toggleOn}>
       {currentTheme === "dark" ? (
         <IconLight height={20} />
       ) : (
