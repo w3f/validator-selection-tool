@@ -15,7 +15,6 @@ function setTheme(themeName: string) {
   } else {
     setTheme("light")
   }
-  console.log(localStorage.getItem("data-theme"))
 })()
 
 function IconDark({ height }: IconProps) {
