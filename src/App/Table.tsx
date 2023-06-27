@@ -120,7 +120,7 @@ export function Table() {
           ))}
         </div>
         {Object.entries(sections).map(([key, title], index) => (
-          <div className="w-full flex flex-col">
+          <div key={key} className="w-full flex flex-col">
             <span
               className={`md:top-0 text-xs leading-5 text-foreground-dimmed bg-background-default border-b-[1px] border-fill-separator pb-2  ${
                 index === Object.values(sections).length - 1
