@@ -1,5 +1,5 @@
-import { map, withLatestFrom } from "rxjs"
-import { useStateObservable, withDefault } from "@react-rxjs/core"
+import { combineLatest, distinctUntilChanged, map, withLatestFrom } from "rxjs"
+import { state, useStateObservable, withDefault } from "@react-rxjs/core"
 import { ResultsState, resultsState$, isToughCookie$ } from "@/state"
 import { Header } from "./Header"
 import { Hero } from "./Hero"
@@ -18,18 +18,20 @@ const isInit$ = resultsState$.pipeState(
   withDefault(true),
 )
 
+const isPerfect$ = resultsState$.pipe(
+  map((resultState) => resultState === ResultsState.PERFECT),
+  distinctUntilChanged(),
+)
+
 const toughCookieJsx = <ToughCookie />
 const pickerJsx = <Picker />
-const main$ = resultsState$.pipeState(
-  withLatestFrom(isToughCookie$),
-  map(([resultState, isToughCookie]) =>
-    resultState === ResultsState.PERFECT
-      ? null
-      : isToughCookie
-      ? toughCookieJsx
-      : pickerJsx,
+const main$ = state(
+  combineLatest([isPerfect$, isToughCookie$]).pipe(
+    map(([isPerfect, isToughCookie]) =>
+      isPerfect ? null : isToughCookie ? toughCookieJsx : pickerJsx,
+    ),
   ),
-  withDefault(pickerJsx),
+  pickerJsx,
 )
 
 const suspended = (
