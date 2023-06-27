@@ -38,6 +38,16 @@ const currentQuestionId$ = state(
   ),
 )
 
+const currentPath$ = userSelection$.pipe(
+  scan((acc, ab) => acc.concat(ab), [] as Array<"a" | "b">),
+  startWith([]),
+  withReset,
+)
+
+currentPath$.subscribe((currentPath) => {
+  console.info(`currentPath: ${currentPath.join()}`)
+})
+
 export const pair$ = currentQuestionId$.pipeState(map(getPair), withReset)
 
 export const nSelected$ = pair$.pipeState(
