@@ -25,6 +25,12 @@ export function Hero() {
             To start, make your first selection between the validators
             presented!
           </span>
+          <span className="font-medium">
+            Feel free to give feedback by sending an email to{" "}
+            <a className="text-red-300" href="mailto:jonas@web3.foundation">
+              jonas@web3.foundation
+            </a>
+          </span>
         </div>
       </div>
     </div>
