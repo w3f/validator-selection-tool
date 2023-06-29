@@ -78,7 +78,13 @@ export function Table() {
             >
               <div className="w-4 h-4 flex items-center justify-center mr-3">
                 <input
-                  className="appearance-none text-foreground-primary w-full h-full rounded-sm focus:ring-0 shadow-none bg-background-dip  border-border-hint"
+                  className={
+                    (selectedValidators.has(validator.address) ||
+                    selectedValidators.size < MAX_SELECTED_VALIDATORS
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed") +
+                    " appearance-none text-foreground-primary w-full h-full rounded-sm focus:ring-0 shadow-none bg-background-dip  border-border-hint"
+                  }
                   onChange={() => onToggleValidtor(validator.address)}
                   checked={selectedValidators.has(validator.address)}
                   type="checkbox"
