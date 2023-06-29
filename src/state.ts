@@ -74,7 +74,7 @@ export const resultsState$: StateObservable<ResultsState> =
   latestQuality$.pipeState(
     map((x) => {
       if (x === 0) return ResultsState.INIT
-      if (x < 0.7) return ResultsState.INSUFICIENT
+      if (x < 0.625) return ResultsState.INSUFICIENT
       return x > 0.85 ? ResultsState.PERFECT : ResultsState.GOOD_ENOUGH
     }),
     withReset,
