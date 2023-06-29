@@ -45,7 +45,7 @@ const currentPath$ = userSelection$.pipe(
 )
 
 currentPath$.subscribe((currentPath) => {
-  console.info(`currentPath: ${currentPath.join()}`)
+  console.debug(`currentPath: ${currentPath.join()}`)
 })
 
 export const pair$ = currentQuestionId$.pipeState(map(getPair), withReset)
