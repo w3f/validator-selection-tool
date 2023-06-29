@@ -27,7 +27,7 @@ export function Hero() {
           </span>
           <span className="font-medium">
             Feel free to give feedback by sending an email to{" "}
-            <a className="text-red-300" href="mailto:jonas@web3.foundation">
+            <a className="text-red-600" href="mailto:jonas@web3.foundation">
               jonas@web3.foundation
             </a>
           </span>
