@@ -22,7 +22,7 @@ const fonts = Unfonts({
 
     /**
      * define which characters to load
-     * default: undefined (load all characters)
+     * default: undefined (load all cseharacters)
     text: 'ViteAwsom',
      */
 
@@ -70,6 +70,7 @@ export default defineConfig(({ mode }) => {
   else plugins.unshift(customPreloadPlugin(), fonts)
 
   return {
+    base: process.env.BASE_URL || "/",
     build: {
       target: ["es2020"],
       sourcemap: true,
