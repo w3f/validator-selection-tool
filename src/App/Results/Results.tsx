@@ -1,52 +1,15 @@
-import { onReset, resultsState$, ResultsState, nSelected$ } from "@/state"
-import { Subscribe, useStateObservable, withDefault } from "@react-rxjs/core"
-import { Loading } from "../Components/Loading"
-import Button from "../Components/Button"
-import { CheckIcon, CopyIcon } from "@/Assets/Icons"
-import { useState } from "react"
-import { Table, selectedValidators$ } from "./Table"
-import { map, take } from "rxjs"
+import { onReset, resultsState$, ResultsState } from "@/state"
+import { Subscribe, useStateObservable } from "@react-rxjs/core"
+import { Loading } from "@/Components/Loading"
+import Button from "@/Components/Button"
+import { Table } from "./Table"
+import { Selected } from "./Selected"
+import { Copy } from "./Copy"
 
 const Reset: React.FC = () => {
   return (
     <Button variant="ghost" small secondary onClick={() => onReset()}>
       Reset
-    </Button>
-  )
-}
-
-const disabled$ = selectedValidators$.pipeState(
-  map((v) => v.size === 0),
-  withDefault(true),
-)
-
-function Copy() {
-  const isDisabled = useStateObservable(disabled$)
-  const [clicked, setClicked] = useState(false)
-  return (
-    <Button
-      small
-      id="copyBtn"
-      type="submit"
-      disabled={isDisabled}
-      onClick={() => {
-        selectedValidators$.pipe(take(1)).subscribe((selected) => {
-          const selectedAddresses = [...selected].join()
-          navigator.clipboard.writeText(selectedAddresses)
-        })
-
-        setClicked(true)
-        setTimeout(() => {
-          setClicked(false)
-        }, 3000)
-      }}
-    >
-      <div className="flex gap-2 ">
-        {clicked ? <CheckIcon /> : <CopyIcon />}
-        <span className="">
-          {clicked ? "Copied to clipboard" : "Copy to clipboard"}
-        </span>
-      </div>
     </Button>
   )
 }
@@ -73,8 +36,6 @@ export default function Results() {
           </div>
         </div>
         <div className="flex gap-1.5 items-center text-sm">
-          <span>Selected:</span>
-          <span className="font-semibold w-6 text-start">{nSelected$}</span>
           <span>Precision:</span>
           {resultsState === ResultsState.INSUFICIENT && (
             <div className="flex items-center gap-1.5">
@@ -94,18 +55,17 @@ export default function Results() {
               <span className="text-green-600 font-semibold">Perfect</span>
             </div>
           )}
+          <Selected />
         </div>
       </div>
       <Subscribe fallback={<Loading size={16} />}>
-        <div className="overflow-y-clip overflow-x-scroll md:overflow-scroll md:pr-4 pb-20">
-          <Table />
-          {resultsState > ResultsState.INSUFICIENT && (
-            <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_-2px_6px_rgba(0,0,0,0.4)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
-              <Reset />
-              <Copy />
-            </div>
-          )}
-        </div>
+        <Table />
+        {resultsState > ResultsState.INSUFICIENT && (
+          <div className="w-full absolute drop-shadow-[0_-2px_6px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_-2px_6px_rgba(0,0,0,0.4)]  bottom-0 gap-4 h-fit px-4 py-6 bg-background-default left-0 justify-between flex md:hidden">
+            <Reset />
+            <Copy />
+          </div>
+        )}
       </Subscribe>
     </form>
   )

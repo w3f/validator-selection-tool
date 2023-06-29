@@ -1,4 +1,4 @@
-import { combineLatest, distinctUntilChanged, map, withLatestFrom } from "rxjs"
+import { combineLatest, distinctUntilChanged, map } from "rxjs"
 import { state, useStateObservable, withDefault } from "@react-rxjs/core"
 import { ResultsState, resultsState$, isToughCookie$ } from "@/state"
 import { Header } from "./Header"

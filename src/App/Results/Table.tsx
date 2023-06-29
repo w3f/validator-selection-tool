@@ -2,9 +2,10 @@ import { AccountIcon } from "@/Components/AccountIcon"
 import { results$, resultsState$, ResultsState } from "@/state"
 import { SUSPENSE, useStateObservable, withDefault } from "@react-rxjs/core"
 import { map, scan, startWith, switchMap } from "rxjs"
-import { sections, Field } from "./Picker"
+import { sections } from "@/App/sections"
 import { RightArrowIcon } from "@/Assets/Icons"
 import { createSignal } from "@react-rxjs/utils"
+import { ValidatorField } from "@/Components/ValidatorField"
 
 const isPerfect$ = resultsState$.pipeState(
   map((x) => x === ResultsState.PERFECT),
@@ -13,7 +14,7 @@ const isPerfect$ = resultsState$.pipeState(
 
 const [toggleValidator$, onToggleValidtor] = createSignal<string>()
 
-const MAX_SELECTED_VALIDATORS = 16
+export const MAX_SELECTED_VALIDATORS = 16
 export const selectedValidators$ = results$.pipeState(
   map(
     (results) =>
@@ -64,7 +65,7 @@ export function Table() {
   const validators = useStateObservable(results$)
 
   return Array.isArray(validators) ? (
-    <>
+    <div className="overflow-y-scroll md:pr-4 pb-20">
       <div className=" pr-0 w-full whitespace-nowrap text-sm text-foreground-contrast leading-5 flex md:pl-[2px]">
         <div className=" w-fit flex flex-col">
           <span className="md:top-0 text-xs leading-5 border-b-[1px] border-fill-separator pb-2 bg-background-default">
@@ -135,7 +136,7 @@ export function Table() {
                 key={validator.address}
                 className="w-full flex items-center pb-5 pt-4 border-b-[1px] border-fill-separator"
               >
-                <Field
+                <ValidatorField
                   className={
                     index === Object.values(sections).length - 1
                       ? "text-right w-full"
@@ -156,7 +157,7 @@ export function Table() {
         <span>Load 16 more</span>
         <RightArrowIcon size="12" />
       </button>
-    </>
+    </div>
   ) : validators === SUSPENSE ? (
     validators
   ) : (

@@ -1,17 +1,10 @@
-import Button from "@/Components/Button"
 import { state, useStateObservable } from "@react-rxjs/core"
 import { pair$, onUserSelection } from "@/state"
 import { map, noop } from "rxjs"
-import { ValidatorData } from "@/api"
+import { sections } from "@/App/sections"
 import Tooltip from "@/Components/Tooltip"
-
-export const sections = {
-  selfStake: "Self Stake",
-  commission: "Commission",
-  avgEraPoints: "Avg. Era Points",
-  clusterSize: "Cluster Size",
-  votes: "Votes",
-} as const
+import { ValidatorField } from "@/Components/ValidatorField"
+import Button from "@/Components/Button"
 
 export const tooltips = {
   votes:
@@ -24,19 +17,6 @@ export const tooltips = {
   selfStake:
     "The amount of stake that the validator is using to nominate themselves. Can be regarded as skin-in-the-game. Generally, the higher the better.",
 } as const
-
-export const Field: React.FC<{
-  field: keyof ValidatorData
-  validator: ValidatorData | null
-  className?: string
-}> = ({ validator, field, className }) => {
-  if (!validator) return <>&nbsp;</>
-  const append =
-    field === "selfStake" ? " DOT" : field === "commission" ? "%" : ""
-  return (
-    <div className={className}>{validator[field]?.toFixed(0) + append}</div>
-  )
-}
 
 const getValidator$ = state(
   (kind: "a" | "b") => pair$.pipe(map(({ pair }) => pair && pair[kind])),
@@ -81,7 +61,7 @@ const Column: React.FC<{
               right ? "pr-3 md:pr-6 items-start" : "pl-3 md:pl-6 items-end"
             }`}
           >
-            <Field validator={validator} field={key as any} />
+            <ValidatorField validator={validator} field={key as any} />
             {index < arr.length - 1 ? (
               <div className="w-full h-[1px] bg-fill-separator" />
             ) : (
@@ -93,6 +73,7 @@ const Column: React.FC<{
     </div>
   )
 }
+
 function Center() {
   return (
     <div className="flex flex-col-reverse md:flex-col items-center gap-0 md:gap-4 pt-6 md:pt-0 md:pb-6">
