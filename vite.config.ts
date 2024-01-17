@@ -1,6 +1,5 @@
 import { resolve } from "path"
 import { defineConfig, PluginOption } from "vite"
-import modulepreload from "rollup-plugin-modulepreload"
 import reactPlugin from "@vitejs/plugin-react"
 import typescript from "rollup-plugin-typescript2"
 import Unfonts from "unplugin-fonts/vite"
@@ -49,6 +48,7 @@ const typescriptPlugin: any = () => ({
   enforce: "pre",
 })
 
+/*
 const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
@@ -61,13 +61,14 @@ const customPreloadPlugin = () => {
   delete result.generateBundle
   return result
 }
+*/
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development"
 
   const plugins: Array<PluginOption> = [reactPlugin()]
   if (isDev) plugins.unshift(typescriptPlugin())
-  else plugins.unshift(customPreloadPlugin(), fonts)
+  else plugins.unshift(fonts)
 
   return {
     base: process.env.BASE_URL || "/",
