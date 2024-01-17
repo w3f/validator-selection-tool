@@ -1,8 +1,9 @@
-import { getStakingValidators } from "./chain"
+import { SS58String } from "@polkadot-api/substrate-bindings"
+import { client } from "./chain"
 
-export const getComissions = (validators: string[]) =>
-  Promise.all(validators.map(getStakingValidators)).then((validators) =>
-    validators.map(
-      (v) => v && Math.round((v.commission as number) / 1_000) / 10_000,
-    ),
+export const getComissions = (validators: SS58String[]) =>
+  Promise.all(
+    validators.map((x) => client.dot.query.Staking.Validators.getValue(x)),
+  ).then((validators) =>
+    validators.map((v) => v && Math.round(v.commission / 1_000) / 10_000),
   )

@@ -1,6 +1,7 @@
 import { validators, x as xPointsRaw, questions } from "./initialData.json"
 import type { Pair, ScoredValidator, ValidatorData } from "./types"
 import { linearInterpolation } from "./linearInterpolation"
+import { getValidators } from "./validators"
 
 type DataPoints = [Array<number>, Array<number>, Array<number>, Array<number>]
 
@@ -51,7 +52,21 @@ const sortingDataPromise = import("./sortingData.json").then(
   (mod) => mod.default,
 ) as Promise<Array<DataPoints>>
 
-const validatorsP = import("./validators").then((x) => x.validators)
+const pullingValidatorsStart = Date.now()
+const validatorsP = getValidators().then(
+  (validators) => {
+    console.debug(
+      `validators loaded in ${(Date.now() - pullingValidatorsStart) / 1_000}s`,
+      validators,
+    )
+    return validators
+  },
+  (e) => {
+    console.log("there was an error loading the validators data")
+    console.error(e)
+    return []
+  },
+)
 
 export async function ranking(
   questionId: number,
