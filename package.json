@@ -1,5 +1,5 @@
 {
-  "name": "Algorithm integration",
+  "name": "AlgorithmIntegration",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/josepot/alg-integration.git"
@@ -7,6 +7,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "postinstall": "papi",
     "analyze": "source-map-explorer 'dist/assets/*.js' --no-border-checks",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "dev": "vite",
@@ -21,22 +22,21 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@polkadot-api/cli": "0.0.1-a6fbafa032fb69874f1b9aa6222c4ea5e16611df.1.0",
+    "@polkadot-api/client": "0.0.1-77aecff2c26dc33a5ba1e00e80fa4ee4a2b1307c.1.0",
+    "@polkadot-api/legacy-polkadot-provider": "0.0.1-77aecff2c26dc33a5ba1e00e80fa4ee4a2b1307c.1.0",
+    "@polkadot-api/substrate-bindings": "0.0.1-77aecff2c26dc33a5ba1e00e80fa4ee4a2b1307c.1.0",
     "@polkadot/react-identicon": "^3.5.1",
     "@react-rxjs/core": "^0.10.4",
     "@react-rxjs/utils": "^0.9.5",
+    "@substrate/connect": "^0.8.4",
     "@tailwindcss/forms": "^0.5.3",
-    "@unstoppablejs/client": "^0.2.1",
-    "@unstoppablejs/substrate-bindings": "^0.0.1-rc.2",
-    "@unstoppablejs/utils": "^1.1.0",
-    "@unstoppablejs/ws-provider": "^0.0.1",
     "chroma-js": "^2.4.2",
     "polkadot-theme": "^1.1.6",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-error-boundary": "^3.1.4",
-    "rxjs": "^7.8.1",
-    "scale-ts": "^0.2.11",
-    "smoldot": "^1.0.10"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@jest/globals": "^28.1.0",
@@ -57,7 +57,7 @@
     "lint-staged": "^12.4.3",
     "postcss": "^8.4.24",
     "postcss-focus-visible": "^8.0.2",
-    "prettier": "^2.8.8",
+    "prettier": "^3.2.2",
     "react-test-renderer": "^18.1.0",
     "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-modulepreload": "^2.0.0",
@@ -68,6 +68,7 @@
     "tailwindcss": "^3.3.2",
     "ts-jest": "^28.0.3",
     "typescript": "^4.7.2",
+    "unocss": "0.57.1",
     "unplugin-fonts": "^1.0.3",
     "vite": "^2.9.9"
   },
@@ -78,5 +79,29 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md}": "prettier --write"
+  },
+  "polkadot-api": {
+    "dot": {
+      "metadata": "dot-metadata.scale",
+      "outputFolder": "./src/api/validators/chain/descriptors",
+      "selectOnly": [
+        "Identity.query.IdentityOf",
+        "Identity.query.SuperOf",
+        "Staking.query.Validators",
+        "Staking.query.CurrentEra",
+        "Staking.query.ErasRewardPoints",
+        "Staking.query.ErasStakers",
+        "Staking.query.ActiveEra",
+        "Staking.query.Nominators",
+        "Session.query.Validators"
+      ]
+    },
+    "roc": {
+      "metadata": "roc-metadata.scale",
+      "outputFolder": "./src/api/validators/chain/descriptors",
+      "selectOnly": [
+        "Identity.query.IdentityOf"
+      ]
+    }
   }
 }
