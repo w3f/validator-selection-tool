@@ -1,25 +1,18 @@
-import { lastValueFrom, mergeMap } from "rxjs"
-import { getStakingNominatorsFromKey, stakingNominatorsKeys$ } from "./chain"
+import { SS58String } from "@polkadot-api/substrate-bindings"
+import { client } from "./chain"
 
-export const getVotes = async (validators: string[]) => {
-  const votes: Map<string, { count: number }> = new Map(
+export const getVotes = async (validators: SS58String[]) => {
+  const votes: Map<SS58String, { count: number }> = new Map(
     validators.map((v) => [v, { count: 0 }]),
   )
 
-  const getNominatorAndUpdateVotes = async (storageKey: string) => {
-    const nominator = await getStakingNominatorsFromKey(storageKey)
-    nominator?.targets.forEach((t) => {
+  const nominators = await client.dot.query.Staking.Nominators.getEntries()
+  nominators.forEach(({ value: { targets } }) => {
+    targets.forEach((t) => {
       const v = votes.get(t)
       v && v.count++
     })
-    return nominator
-  }
-
-  await lastValueFrom(
-    stakingNominatorsKeys$.pipe(
-      mergeMap((keys) => Promise.all(keys.map(getNominatorAndUpdateVotes))),
-    ),
-  )
+  })
 
   return validators.map((v) => votes.get(v)!.count)
 }
