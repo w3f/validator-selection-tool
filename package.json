@@ -29,7 +29,7 @@
     "@polkadot/react-identicon": "^3.5.1",
     "@react-rxjs/core": "^0.10.4",
     "@react-rxjs/utils": "^0.9.5",
-    "@substrate/connect": "^0.8.4",
+    "@substrate/connect": "^0.8.5",
     "@tailwindcss/forms": "^0.5.3",
     "chroma-js": "^2.4.2",
     "polkadot-theme": "^1.1.6",
