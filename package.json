@@ -11,6 +11,7 @@
     "dev": "vite",
     "test": "vitest",
     "build": "papi --whitelist whitelist.ts && tsc && vite build",
+    "gh-build": "papi --whitelist whitelist.ts && tsc && vite build --base=/validator-selection-tool/",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "preview": "vite preview"
   },
