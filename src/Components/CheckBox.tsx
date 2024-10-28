@@ -1,5 +1,3 @@
-import { CheckIcon } from "@/Assets/Icons"
-
 interface CheckBoxProps {
   onChange: (e: any) => void
   value: string

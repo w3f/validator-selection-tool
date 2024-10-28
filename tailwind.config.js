@@ -2,20 +2,20 @@
 module.exports = {
   mode: "jit",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: ['class', '[data-theme="dark"]'],
+  darkMode: ["class", '[data-theme="dark"]'],
   theme: {
     extend: {
       boxShadow: {
         pop: "var(--box-shadow-pop)",
         idle: "var(--box-shadow-idle)",
-        hover: "var(--box-shadow-hover)"
+        hover: "var(--box-shadow-hover)",
       },
       colors: {
         background: {
           default: "var(--colors-background-default)",
           system: "var(--colors-background-system)",
           float: "var(--colors-background-float)",
-          dip: "var(--colors-background-dip)"
+          dip: "var(--colors-background-dip)",
         },
         fill: {
           primary: "var(--colors-fill-primary)",
@@ -32,12 +32,12 @@ module.exports = {
           danger: "var(--colors-fill-danger)",
           dangerHover: "var(--colors-fill-danger-hover)",
           dangerPressed: "var(--colors-fill-danger-pressed)",
-      "elevate_1": "var(--colors-fill-elevate-1)",
+          elevate_1: "var(--colors-fill-elevate-1)",
           overlay: "var(--colors-fill-overlay)",
           selected: "var(--colors-fill-selected)",
           white: "var(--colors-fill-white)",
           separator: "var(--colors-fill-separator)",
-          elevate: "var(--colors-fill-elevate)"
+          elevate: "var(--colors-fill-elevate)",
         },
         border: {
           contrast: "var(--colors-border-contrast)",
@@ -46,7 +46,7 @@ module.exports = {
           danger: "var(--colors-border-danger)",
           hint: "var(--colors-border-hint)",
           disabled: "var(--colors-border-disabled)",
-          focus: "var(--colors-border-focus)"
+          focus: "var(--colors-border-focus)",
         },
         foreground: {
           contrast: "var(--colors-foreground-contrast)",
@@ -56,13 +56,13 @@ module.exports = {
           white: "var(--colors-foreground-white)",
           disabled: "var(--colors-foreground-disabled)",
           danger: "var(--colors-foreground-danger)",
-          emphasized: "var(--colors-foreground-emphasized)"
+          emphasized: "var(--colors-foreground-emphasized)",
         },
         accent: {
           cyan: "var(--colors-accent-cyan)",
           green: "var(--colors-accent-green)",
           lime: "var(--colors-accent-lime)",
-          random: "var(--colors-accent-random)"
+          random: "var(--colors-accent-random)",
         },
         black: "var(--colors-black)",
         white: "var(--colors-white)",
@@ -77,7 +77,7 @@ module.exports = {
           700: "var(--colors-p-pink-700)",
           800: "var(--colors-p-pink-800)",
           900: "var(--colors-p-pink-900)",
-          950: "var(--colors-p-pink-950)"
+          950: "var(--colors-p-pink-950)",
         },
         pGray: {
           50: "var(--colors-p-gray-50)",
@@ -90,7 +90,7 @@ module.exports = {
           700: "var(--colors-p-gray-700)",
           800: "var(--colors-p-gray-800)",
           900: "var(--colors-p-gray-900)",
-          950: "var(--colors-p-gray-950)"
+          950: "var(--colors-p-gray-950)",
         },
         pRed: {
           50: "var(--colors-p-red-50)",
@@ -103,7 +103,7 @@ module.exports = {
           700: "var(--colors-p-red-700)",
           800: "var(--colors-p-red-800)",
           900: "var(--colors-p-red-900)",
-          950: "var(--colors-p-red-950)"
+          950: "var(--colors-p-red-950)",
         },
         pWhiteTransparent: {
           100: "var(--colors-p-white-transparent-100)",
@@ -114,7 +114,7 @@ module.exports = {
           600: "var(--colors-p-white-transparent-600)",
           700: "var(--colors-p-white-transparent-700)",
           800: "var(--colors-p-white-transparent-800)",
-          900: "var(--colors-p-white-transparent-900)"
+          900: "var(--colors-p-white-transparent-900)",
         },
         pBlackTransparent: {
           50: "var(--colors-p-black-transparent-50)",
@@ -126,22 +126,22 @@ module.exports = {
           600: "var(--colors-p-black-transparent-600)",
           700: "var(--colors-p-black-transparent-700)",
           800: "var(--colors-p-black-transparent-800)",
-          900: "var(--colors-p-black-transparent-900)"
+          900: "var(--colors-p-black-transparent-900)",
         },
         accentCyan: {
           500: "var(--colors-accent-cyan-500)",
           600: "var(--colors-accent-cyan-600)",
-          700: "var(--colors-accent-cyan-700)"
+          700: "var(--colors-accent-cyan-700)",
         },
         accentGreen: {
           500: "var(--colors-accent-green-500)",
           600: "var(--colors-accent-green-600)",
-          700: "var(--colors-accent-green-700)"
+          700: "var(--colors-accent-green-700)",
         },
         accentLime: {
           500: "var(--colors-accent-lime-500)",
           600: "var(--colors-accent-lime-600)",
-          700: "var(--colors-accent-lime-700)"
+          700: "var(--colors-accent-lime-700)",
         },
         pPurple: {
           50: "var(--colors-p-purple-50)",
@@ -155,23 +155,23 @@ module.exports = {
           800: "var(--colors-p-purple-800)",
           900: "var(--colors-p-purple-900)",
           925: "var(--colors-p-purple-925)",
-          950: "var(--colors-p-purple-950)"
-        }
+          950: "var(--colors-p-purple-950)",
+        },
       },
       boderRadius: {
-        lg: "var(--boder-radius-lg)"
+        lg: "var(--boder-radius-lg)",
       },
       fontFamily: {
         unbounded: "var(--font-family-unbounded)",
         inter: "var(--font-family-inter)",
-        mono: "var(--font-family-mono)"
+        mono: "var(--font-family-mono)",
       },
       fontWeight: {
         bold: "var(--font-weight-bold)",
         regular: "var(--font-weight-regular)",
-        semibold: "var(--font-weight-semibold)"
-      }
+        semibold: "var(--font-weight-semibold)",
+      },
     },
   },
-  plugins: [require("@tailwindcss/forms")]
+  plugins: [require("@tailwindcss/forms")],
 }

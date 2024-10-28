@@ -1,9 +1,9 @@
-import { SS58String } from "@polkadot-api/substrate-bindings"
-import { client } from "./chain"
+import { type SS58String } from "polkadot-api"
+import { dotApi } from "./chain"
 
 const getFormattedSelfStake =
   (era: number) => async (validator: SS58String) => {
-    const selfStakeRaw = await client.dot.query.Staking.ErasStakers.getValue(
+    const selfStakeRaw = await dotApi.query.Staking.ErasStakers.getValue(
       era,
       validator,
     )
@@ -12,7 +12,7 @@ const getFormattedSelfStake =
   }
 
 export const getSelfStake = async (validators: string[]) => {
-  const activeEra = await client.dot.query.Staking.ActiveEra.getValue()
+  const activeEra = await dotApi.query.Staking.ActiveEra.getValue()
 
   return Promise.all(validators.map(getFormattedSelfStake(activeEra!.index)))
 }

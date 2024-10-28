@@ -6,9 +6,6 @@ import { Hero } from "./Hero"
 import { Picker } from "./Picker"
 import { ToughCookie } from "./ToughCookie"
 
-import "polkadot-theme/global.css"
-import "polkadot-theme/light.css"
-import "polkadot-theme/dark.css"
 import { lazy, Suspense } from "react"
 
 const Results = lazy(() => import("./Results"))

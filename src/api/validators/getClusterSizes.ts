@@ -1,35 +1,22 @@
-import { Binary, SS58String } from "@polkadot-api/substrate-bindings"
-import { client } from "./chain"
+import { Binary, SS58String } from "polkadot-api"
+import { pplApi } from "./chain"
 
 const getDescription = async (validator: SS58String) => {
-  let value: SS58String | Binary | undefined
-  const runtime = await client.runtime.latest()
-  if (runtime.isCompatible((x) => x.roc.query.Identity.IdentityOf)) {
-    const identityValidator =
-      await client.roc.query.Identity.IdentityOf.getValue(validator)
-    if (!identityValidator) return null
-    ;({ value } = identityValidator[0].info.display)
-  } else {
-    const identityValidator =
-      await client.dot.query.Identity.IdentityOf.getValue(validator)
-    if (!identityValidator) return null
-    ;({ value } = identityValidator.info.display)
-  }
-
-  if (!value) return null
-  return value instanceof Binary ? value.asText() : value
+  const [result] =
+    (await pplApi.query.Identity.IdentityOf.getValue(validator)) || []
+  if (!result) return null
+  const { value } = result.info.display
+  return value instanceof Binary ? value.asText() : null
 }
 
-const getRecursiveDescription = async (
-  validator: SS58String,
-): Promise<string | null> => {
+const getRecursiveDescription = async (validator: SS58String) => {
   const description = await getDescription(validator)
   if (description) return description
 
-  const parent = await client.dot.query.Identity.SuperOf.getValue(validator)
+  const parent = await pplApi.query.Identity.SuperOf.getValue(validator)
   if (!parent) return null
   const [, { value }] = parent
-  return value instanceof Binary ? value.asText() : value ?? null
+  return value instanceof Binary ? value.asText() : null
 }
 
 const getDescriptions = async (validators: SS58String[]) =>

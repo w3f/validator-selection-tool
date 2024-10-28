@@ -2,10 +2,6 @@ import { useStateObservable } from "@react-rxjs/core"
 import { ResultsState, resultsState$ } from "@/state"
 import { map } from "rxjs"
 
-import "polkadot-theme/global.css"
-import "polkadot-theme/light.css"
-import "polkadot-theme/dark.css"
-
 const isGoodEnough$ = resultsState$.pipeState(
   map((x) => x === ResultsState.GOOD_ENOUGH),
 )

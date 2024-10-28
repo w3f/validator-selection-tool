@@ -1,1 +1,0 @@
-import "@substrate/connect/worker"

@@ -3,11 +3,11 @@ import { getClusterSizes } from "./getClusterSizes"
 import { getEraPoints } from "./getPoints"
 import { getSelfStake } from "./getSelfStake"
 import { getVotes } from "./getVotes"
-import { client } from "./chain"
+import { dotApi } from "./chain"
 
 export const getValidators = async () => {
   const fnPromise = getEraPoints()
-  const validators = await client.dot.query.Session.Validators.getValue()
+  const validators = await dotApi.query.Session.Validators.getValue()
 
   const [comissions, clusterSizes, points, votes, selfStake] =
     await Promise.all([
