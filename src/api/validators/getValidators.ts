@@ -1,12 +1,13 @@
 import { getComissions } from "./getCommissions"
 import { getClusterSizes } from "./getClusterSizes"
 import { getEraPoints } from "./getPoints"
-import { getSelfStake } from "./getSelfStake"
+import { getOwnStakes } from "./getSelfStake"
 import { getVotes } from "./getVotes"
 import { dotApi } from "./chain"
 
 export const getValidators = async () => {
   const fnPromise = getEraPoints()
+  const ownStakesP = getOwnStakes()
   const validators = await dotApi.query.Session.Validators.getValue()
 
   const [comissions, clusterSizes, points, votes, selfStake] =
@@ -17,7 +18,7 @@ export const getValidators = async () => {
         getEraPointsValidators(validators),
       ),
       getVotes(validators),
-      getSelfStake(validators),
+      ownStakesP.then((ownStakes) => validators.map((x) => ownStakes[x] || 0)),
     ])
 
   const result = Object.fromEntries(

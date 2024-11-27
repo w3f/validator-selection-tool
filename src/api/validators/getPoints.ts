@@ -1,18 +1,10 @@
 import type { SS58String } from "polkadot-api"
 import { dotApi } from "./chain"
 
-const N_ERAS = 83
-
 export const getEraPoints = async () => {
-  const currentEra = await dotApi.query.Staking.CurrentEra.getValue()
-
-  const previousEras = Array(N_ERAS)
-    .fill(null)
-    .map((_, idx) => currentEra! - idx - 1)
-
-  const allEraPoints = await Promise.all(
-    previousEras.map((x) => dotApi.query.Staking.ErasRewardPoints.getValue(x)),
-  )
+  const allEraPoints = (
+    await dotApi.query.Staking.ErasRewardPoints.getEntries()
+  ).map((x) => x.value)
 
   return async (validators: SS58String[]) => {
     let totalScorers = 0

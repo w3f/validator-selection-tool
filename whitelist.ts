@@ -4,13 +4,7 @@ import {
 } from "@polkadot-api/descriptors"
 
 const dotWhitelist: DotWhitelistEntry[] = [
-  "query.Staking.Validators",
-  "query.Staking.CurrentEra",
-  "query.Staking.ErasRewardPoints",
-  "query.Staking.ErasStakers",
-  "query.Staking.ActiveEra",
-  "query.Staking.Nominators",
-  "query.Staking.Validators",
+  "query.Staking.*",
   "query.Session.Validators",
 ]
 

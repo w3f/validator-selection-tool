@@ -9,7 +9,7 @@ import SmWorker from "polkadot-api/smoldot/worker?worker"
 import { dot, dotPpl } from "@polkadot-api/descriptors"
 const worker = new SmWorker()
 
-const smoldot = startFromWorker(worker)
+const smoldot = startFromWorker(worker, { forbidWs: true })
 const chain = smoldot.addChain({ chainSpec: chainSpecRelay })
 
 const dotClient = createClient(getSmProvider(chain))
