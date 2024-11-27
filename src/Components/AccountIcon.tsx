@@ -3,21 +3,18 @@ import { FC, SVGAttributes, useMemo } from "react"
 
 export const stringShorten = (input: string, preLen: number): string =>
   input.length > preLen * 2 + 2
-    ? `${input.slice(preLen)}…${input.slice(-preLen)}`
+    ? `${input.slice(0, preLen)}…${input.slice(-preLen)}`
     : input
 
 export function AccountIcon({
   address,
-  name,
   small,
   showAddress,
 }: {
   address: string
-  name?: string
   small?: boolean
   showAddress?: boolean
 }) {
-  const btnTitle = name || address
   const publicKey = useMemo(() => AccountId().enc(address), [address])
   return (
     <div
@@ -32,7 +29,7 @@ export function AccountIcon({
             small ? "text-body-2 " : "text-body"
           } whitespace-nowrap`}
         >
-          {stringShorten(btnTitle, 4)}
+          {stringShorten(address, 8)}
         </div>
       )}
     </div>
